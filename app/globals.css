@@ -81,9 +81,13 @@
 }
 
 /* Hero Glyph Matrix: kept quiet so it never competes with the headline. */
-/* Hero portrait: original colours, edges dissolving into the background. */
+/* Hero portrait: original colours. The sides and top dissolve into the page (hiding the
+   studio backdrop's edge); the bottom stays solid so it stands on the hero's border. */
 .hero-portrait {
-  mask-image: radial-gradient(ellipse 56% 66% at 50% 40%, #000 45%, transparent 97%);
+  mask-image:
+    linear-gradient(to right, transparent, #000 24%, #000 76%, transparent),
+    linear-gradient(to bottom, transparent, #000 14%);
+  mask-composite: intersect;
 }
 
 /* Faded out at the top so the name, photo and headline stay clean. */

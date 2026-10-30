@@ -96,15 +96,16 @@ export default function Home() {
             </ul>
           </div>
           {/* Large portrait whose edges fade into the page (see .hero-portrait). */}
-          <div className="rise relative mx-auto w-full max-w-sm lg:max-w-none" style={{ '--i': 2 } as React.CSSProperties}>
+          {/* Stands on the hero's bottom border (-mb cancels the padding), capped to the screen height. */}
+          <div className="rise relative -mb-16 flex justify-center self-end pt-6" style={{ '--i': 2 } as React.CSSProperties}>
             <Image
               src={site.portrait}
               alt={`Portrait of ${site.name}`}
               width={993}
               height={1280}
               priority
-              sizes="(min-width: 1024px) 460px, 384px"
-              className="hero-portrait h-auto w-full"
+              sizes="(min-width: 1024px) 460px, 340px"
+              className="hero-portrait h-auto max-h-[min(calc(100svh-7rem),620px)] w-auto max-w-full"
             />
           </div>
         </div>
