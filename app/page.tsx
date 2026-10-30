@@ -4,7 +4,9 @@ import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { Marquee } from '@/components/ui/marquee'
 import { Meteors } from '@/components/ui/meteors'
+import { ShineBorder } from '@/components/ui/shine-border'
 import { TextAnimate } from '@/components/ui/text-animate'
+import { WordRotate } from '@/components/ui/word-rotate'
 import { ContactForm } from './components/contact-form'
 import { CopyButton } from './components/copy-button'
 import { DecryptText } from './components/decrypt-text'
@@ -14,7 +16,7 @@ import { MethodFlow } from './components/method-flow'
 import { WorkGrid } from './components/work-grid'
 import { WritingList } from './components/writing-list'
 import { formatDate, getPosts, getWork } from '@/lib/content'
-import { experience, method, proof, services, site, stats, toolbox } from '@/lib/site'
+import { experience, focus, method, proof, services, site, stats, toolbox } from '@/lib/site'
 
 function SectionHead({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
   return (
@@ -45,7 +47,7 @@ export default function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative z-10 mx-auto -mt-20 flex w-full max-w-6xl items-center px-5 pb-12 lg:mt-0 lg:min-h-[calc(100svh-4rem)] lg:py-16">
+        <div className="relative z-10 mx-auto -mt-20 flex w-full max-w-6xl items-center px-5 pb-12 lg:mt-0 lg:min-h-[min(calc(100svh-4rem),52rem)] lg:py-16">
           <div className="lg:w-[54%]">
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
@@ -60,6 +62,9 @@ export default function Home() {
               <p className="text-lg font-semibold tracking-tight">{site.name}</p>
               <p className="label mt-1">
                 Senior <span className="text-sec">Cybersecurity</span> <span className="text-muted">&</span> <span className="text-web">Web</span> Developer
+              </p>
+              <p className="mt-2 flex gap-1.5 text-sm text-muted">
+                Right now: <WordRotate words={focus} className="font-medium text-fg" />
               </p>
             </div>
             <h1 className="rise mt-6 text-[clamp(2.6rem,5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
@@ -274,7 +279,8 @@ export default function Home() {
                 <dd className="mt-1 text-lg">{site.location}</dd>
               </div>
             </dl>
-            <div className="mt-10 rounded-2xl border border-line bg-surface p-5">
+            <div className="relative mt-10 rounded-2xl border border-line bg-surface p-5">
+              <ShineBorder shineColor={['#f0533f', '#5b8def']} />
               <p className="flex items-center gap-2 text-sm font-medium">
                 <span className="h-2 w-2 rounded-full bg-ok" aria-hidden="true" />
                 Usually replies within 2 days

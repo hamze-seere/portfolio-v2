@@ -18,6 +18,8 @@ export type WorkMeta = {
   order: number
   repo?: string
   live?: string
+  /** Screenshot of the live site in public/, shown in a browser frame on the card. */
+  shot?: string
   /** Extra repositories, frontmatter `repos: Label | url ; Label | url` */
   repos: { label: string; href: string }[]
 }
@@ -68,6 +70,7 @@ export function getWork(): Entry<WorkMeta>[] {
         order: Number(data.order ?? 99),
         repo: data.repo || undefined,
         live: data.live || undefined,
+        shot: data.shot || undefined,
         repos: (data.repos ?? '')
           .split(';')
           .map((pair) => pair.split('|').map((s) => s.trim()))

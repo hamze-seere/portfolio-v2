@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from 'react'
 import { sendMessage } from '@/app/actions'
 import { TOPICS, validate, type Fields, type FormState } from '@/lib/contact'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
+import { fireConfetti } from '@/components/ui/confetti'
 
 const EMPTY: Fields = { name: '', email: '', topic: '', message: '' }
 const input =
@@ -17,6 +18,11 @@ export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => setOpenedAt(String(Date.now())), [])
+  const sentRef = useRef<HTMLDivElement>(null)
+  // A small burst from the confirmation once the message is really sent.
+  useEffect(() => {
+    if (state.status === 'sent') fireConfetti(sentRef.current)
+  }, [state.status])
 
   const local = validate(fields)
   const server = state.status === 'error' ? state.errors : {}
@@ -38,7 +44,7 @@ export function ContactForm() {
 
   if (state.status === 'sent') {
     return (
-      <div role="status" className="rounded-2xl border border-line bg-surface p-8">
+      <div ref={sentRef} role="status" className="rounded-2xl border border-line bg-surface p-8">
         <p className="font-mono text-sm text-ok">✓ Message sent · {state.ref}</p>
         <p className="mt-3 text-lg">Thanks — I reply within two working days.</p>
       </div>

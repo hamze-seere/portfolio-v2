@@ -199,7 +199,7 @@ body {
 /* Entrance: one soft rise, staggered by --i. */
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
     animation-delay: calc(var(--i, 0) * 80ms);
   }
   @keyframes rise {
@@ -221,6 +221,25 @@ body {
   @keyframes blink {
     50% {
       opacity: 0;
+    }
+  }
+  /* Animated List and Word Rotate: each new item pops / slides in (transform + opacity only). */
+  .animated-list-item {
+    animation: list-pop 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+  @keyframes list-pop {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+    }
+  }
+  .word-rotate-item {
+    animation: word-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @keyframes word-in {
+    from {
+      opacity: 0;
+      transform: translateY(60%);
     }
   }
 }

@@ -3,8 +3,11 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState, ViewTransition } from 'react'
 import { TrackTag } from './track'
+import { AnimatedList } from '@/components/ui/animated-list'
+import { Safari } from '@/components/ui/safari'
 import type { Track, WorkMeta } from '@/lib/content'
 import { features } from '@/lib/features'
+import { scanFeed } from '@/lib/site'
 
 type Item = { slug: string; metadata: WorkMeta }
 const FILTERS: { id: 'all' | Exclude<Track, 'both'>; label: string }[] = [
@@ -25,6 +28,12 @@ function bentoSpans(n: number): (1 | 2 | 3)[] {
 }
 // Literal class names so Tailwind generates them.
 const LG_SPAN = { 1: 'lg:col-span-1', 2: 'lg:col-span-2', 3: 'lg:col-span-3' } as const
+const SEVERITY = {
+  high: 'bg-sec/15 text-sec',
+  medium: 'bg-[#febc2e]/15 text-[#febc2e]',
+  low: 'bg-web/15 text-web',
+  pass: 'bg-ok/15 text-ok',
+} as const
 
 /*
   Glowing border, adapted from Aceternity's GlowingEffect (21st.dev) without the
@@ -115,6 +124,30 @@ export function WorkGrid({ items }: { items: Item[] }) {
                   )}
                 </h3>
                 <p className={`mt-3 max-w-2xl text-muted ${featured ? 'md:text-lg' : ''}`}>{m.summary}</p>
+                {m.shot && m.live && (
+                  <div className="relative mt-6">
+                    <Safari
+                      src={m.shot}
+                      url={m.live.replace(/^https:\/\//, '')}
+                      alt={`Screenshot of ${m.title}`}
+                      sizes={featured ? '(min-width: 1024px) 720px, 100vw' : '(min-width: 1024px) 340px, (min-width: 768px) 50vw, 100vw'}
+                      className="transition-transform duration-300 group-hover:-translate-y-1"
+                    />
+                    {slug === 'securescan' && (
+                      // Findings popping in over the screenshot, like a scan running.
+                      <div className="absolute bottom-3 right-3 hidden w-72 sm:block" aria-hidden="true">
+                        <AnimatedList>
+                          {scanFeed.map(([level, text]) => (
+                            <span key={text} className="flex items-center gap-2.5 rounded-lg border border-line bg-surface/95 px-3 py-2 font-mono text-[11px] text-fg shadow-lg shadow-black/30">
+                              <span className={`rounded px-1.5 py-0.5 text-[10px] uppercase ${SEVERITY[level]}`}>{level}</span>
+                              <span className="truncate">{text}</span>
+                            </span>
+                          ))}
+                        </AnimatedList>
+                      </div>
+                    )}
+                  </div>
+                )}
                 {/* Pinned to the bottom so every card in a row lines up. */}
                 <div className="mt-auto pt-6">
                   {featured ? (

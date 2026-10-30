@@ -23,6 +23,20 @@ export const site = {
   focus: ['Web security', 'Next.js', 'TypeScript', 'PowerShell', 'Networking'],
 }
 
+/* Rotates under the name in the hero. */
+export const focus = ['Security scanning', 'Hardened web apps', 'Teaching cybersecurity', 'Network labs'] as const
+
+/* Sample SecureScan findings that pop in over its screenshot on the work grid. */
+export const scanFeed = [
+  ['high', '.env file is publicly readable'],
+  ['pass', 'HSTS with preload'],
+  ['medium', "CSP allows 'unsafe-inline'"],
+  ['pass', 'TLS 1.3 · certificate valid 82 days'],
+  ['high', 'No DMARC policy for the domain'],
+  ['low', 'Server header leaks nginx/1.18'],
+  ['medium', 'Session cookie missing SameSite'],
+] as const
+
 // One-line proof under the hero buttons: [project, what backs it up].
 export const proof = [
   ['SecureScan', '36 tests · open source'],
