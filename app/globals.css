@@ -89,6 +89,14 @@
     linear-gradient(to bottom, transparent, #000 14%);
   mask-composite: intersect;
 }
+/* Desktop: flush to the screen's right edge, so only the left side and bottom fade into the page. */
+@media (min-width: 1024px) {
+  .hero-portrait {
+    mask-image:
+      linear-gradient(to right, transparent, #000 30%),
+      linear-gradient(to top, transparent, #000 18%);
+  }
+}
 
 /* Faded out at the top so the name, photo and headline stay clean. */
 .hero-glyphs {

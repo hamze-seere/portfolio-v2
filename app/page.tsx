@@ -45,8 +45,8 @@ export default function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-10 lg:grid-cols-[1.2fr_1fr]">
-          <div>
+        <div className="relative z-10 mx-auto flex max-w-6xl items-center px-5 pb-12 pt-10 lg:min-h-[calc(100svh-4rem)] lg:py-16">
+          <div className="lg:w-[54%]">
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
                 <span className="relative flex h-2 w-2">
@@ -62,7 +62,7 @@ export default function Home() {
                 Senior <span className="text-sec">Cybersecurity</span> <span className="text-muted">&</span> <span className="text-web">Web</span> Developer
               </p>
             </div>
-            <h1 className="rise mt-6 text-[clamp(2.6rem,6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
+            <h1 className="rise mt-6 text-[clamp(2.6rem,5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
               {features.decryptHeadline ? <DecryptText text={site.headline[0]} delay={250} /> : site.headline[0]}
               <br />
               <span className={features.gradientHeadline ? 'headline-gradient' : 'text-muted'}>{site.headline[1]}</span>
@@ -95,19 +95,21 @@ export default function Home() {
               ))}
             </ul>
           </div>
-          {/* Large portrait whose edges fade into the page (see .hero-portrait). */}
-          {/* Stands on the hero's bottom border (-mb cancels the padding), capped to the screen height. */}
-          <div className="rise relative -mb-16 flex justify-center self-end pt-6" style={{ '--i': 2 } as React.CSSProperties}>
-            <Image
-              src={site.portrait}
-              alt={`Portrait of ${site.name}`}
-              width={993}
-              height={1280}
-              priority
-              sizes="(min-width: 1024px) 460px, 340px"
-              className="hero-portrait h-auto max-h-[min(calc(100svh-7rem),620px)] w-auto max-w-full"
-            />
-          </div>
+        </div>
+        {/* Below the text on phones; on desktop it fills the hero's right side, flush to the screen edge,
+            and fades into the page on the left (see .hero-portrait). */}
+        <div
+          className="rise relative mx-auto aspect-[993/1280] w-[calc(100%-2.5rem)] max-w-sm lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[46%] lg:max-w-none"
+          style={{ '--i': 2 } as React.CSSProperties}
+        >
+          <Image
+            src={site.portrait}
+            alt={`Portrait of ${site.name}`}
+            fill
+            priority
+            sizes="(min-width: 1024px) 46vw, 384px"
+            className="hero-portrait object-cover object-[50%_15%]"
+          />
         </div>
       </section>
 
