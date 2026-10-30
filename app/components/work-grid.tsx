@@ -117,7 +117,18 @@ export function WorkGrid({ items }: { items: Item[] }) {
                 <p className={`mt-3 max-w-2xl text-muted ${featured ? 'md:text-lg' : ''}`}>{m.summary}</p>
                 {/* Pinned to the bottom so every card in a row lines up. */}
                 <div className="mt-auto pt-6">
-                  <p className="border-t border-line pt-4 font-mono text-[13px] text-fg">{m.outcome}</p>
+                  {featured ? (
+                    // The wide tile has room to spare: show each result as its own cell.
+                    <ul className="grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
+                      {m.outcome.split('·').map((o) => (
+                        <li key={o} className="rounded-lg border border-line bg-surface-2/60 px-3 py-2.5 font-mono text-[12px] leading-snug text-fg">
+                          {o.trim()}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="border-t border-line pt-4 font-mono text-[13px] text-fg">{m.outcome}</p>
+                  )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     {m.stack.map((s) => (
                       <span key={s} className="rounded-md bg-surface-2 px-2 py-1 font-mono text-[11px] text-muted">

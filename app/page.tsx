@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
 import { BorderBeam } from '@/components/ui/border-beam'
@@ -14,7 +15,7 @@ import { MethodFlow } from './components/method-flow'
 import { WorkGrid } from './components/work-grid'
 import { WritingList } from './components/writing-list'
 import { formatDate, getPosts, getWork } from '@/lib/content'
-import { experience, method, services, site, stats, toolbox } from '@/lib/site'
+import { experience, method, proof, services, site, stats, toolbox } from '@/lib/site'
 
 function SectionHead({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
   return (
@@ -45,7 +46,7 @@ export default function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative mx-auto grid max-w-6xl items-start gap-12 px-5 pb-20 pt-14 lg:grid-cols-[1.15fr_1fr]">
+        <div className="relative mx-auto grid max-w-6xl items-start gap-12 px-5 pb-20 pt-10 lg:grid-cols-[1.15fr_1fr]">
           <div>
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
@@ -56,10 +57,28 @@ export default function Home() {
                 <AnimatedShinyText className="mx-0">Available for new projects</AnimatedShinyText>
               </p>
             )}
-            <p className="rise label mt-8" style={{ '--i': 1 } as React.CSSProperties}>
-              {site.name} — <span className="text-sec">Security</span> <span className="text-muted">&</span> <span className="text-web">Web</span>
-            </p>
-            <h1 className="rise mt-4 text-[clamp(2.6rem,6.5vw,5rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
+            <div className="rise mt-7 flex items-center gap-4" style={{ '--i': 1 } as React.CSSProperties}>
+              <span className="shrink-0 rounded-full bg-[conic-gradient(from_200deg,var(--sec),var(--web),var(--sec))] p-[2px]">
+                {/* Clipped circle; the photo is scaled up towards the face so it reads at avatar size. */}
+                <span className="block h-16 w-16 overflow-hidden rounded-full border-2 border-bg bg-surface md:h-20 md:w-20">
+                  <Image
+                    src={site.portrait}
+                    alt={`Portrait of ${site.name}`}
+                    width={240}
+                    height={240}
+                    priority
+                    className="h-full w-full origin-[50%_30%] scale-[1.6] object-cover object-[50%_20%]"
+                  />
+                </span>
+              </span>
+              <div>
+                <p className="text-lg font-semibold tracking-tight">{site.name}</p>
+                <p className="label mt-1">
+                  Senior <span className="text-sec">Cybersecurity</span> <span className="text-muted">&</span> <span className="text-web">Web</span> Developer
+                </p>
+              </div>
+            </div>
+            <h1 className="rise mt-6 text-[clamp(2.6rem,6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
               {features.decryptHeadline ? <DecryptText text={site.headline[0]} delay={250} /> : site.headline[0]}
               <br />
               <span className={features.gradientHeadline ? 'headline-gradient' : 'text-muted'}>{site.headline[1]}</span>
@@ -67,7 +86,7 @@ export default function Home() {
             <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-muted" style={{ '--i': 3 } as React.CSSProperties}>
               {site.intro}
             </p>
-            <div className="rise mt-9 flex flex-wrap gap-3" style={{ '--i': 4 } as React.CSSProperties}>
+            <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 4 } as React.CSSProperties}>
               <Link href="/work" className="rounded-lg bg-fg px-5 py-3 font-medium text-bg transition-opacity hover:opacity-85">
                 See the work
               </Link>
@@ -83,10 +102,11 @@ export default function Home() {
                 GitHub ↗
               </a>
             </div>
-            <ul className="rise mt-10 flex flex-wrap gap-2" aria-label="Focus areas" style={{ '--i': 5 } as React.CSSProperties}>
-              {site.focus.map((c) => (
-                <li key={c} className="rounded-md border border-line px-2.5 py-1 font-mono text-xs text-muted">
-                  {c}
+            <ul className="rise mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted" aria-label="Proof" style={{ '--i': 5 } as React.CSSProperties}>
+              {proof.map(([what, backing]) => (
+                <li key={what} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-ok" aria-hidden="true" />
+                  <span className="font-medium text-fg">{what}</span> {backing}
                 </li>
               ))}
             </ul>

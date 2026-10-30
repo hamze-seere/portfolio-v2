@@ -6,7 +6,9 @@ export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hamse-yo-xs.
 export const site = {
   name: 'Hamze Seere',
   initials: 'HS',
-  role: 'Cybersecurity & Web Developer',
+  role: 'Senior Cybersecurity & Web Developer',
+  // public/hamze-portrait.jpg, shown in the hero.
+  portrait: '/hamze-portrait.jpg',
   headline: ['I break things', 'so I can build them better.'],
   intro:
     'Cyber Security Instructor at Telesom and web developer. I teach security, build security tools like SecureScan, and ship web apps hardened like production systems.',
@@ -20,6 +22,13 @@ export const site = {
   ],
   focus: ['Web security', 'Next.js', 'TypeScript', 'PowerShell', 'Networking'],
 }
+
+// One-line proof under the hero buttons: [project, what backs it up].
+export const proof = [
+  ['SecureScan', '36 tests · open source'],
+  ['EduManage', '230 tests · live for a school'],
+  ['Telesom', 'teaching cybersecurity'],
+] as const
 
 export const stats = [
   { value: '17', label: 'Public repositories' },
