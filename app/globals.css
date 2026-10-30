@@ -84,10 +84,8 @@
 /* Hero portrait: original colours. The sides and top dissolve into the page (hiding the
    studio backdrop's edge); the bottom stays solid so it stands on the hero's border. */
 .hero-portrait {
-  mask-image:
-    linear-gradient(to right, transparent, #000 24%, #000 76%, transparent),
-    linear-gradient(to bottom, transparent, #000 14%);
-  mask-composite: intersect;
+  /* Phones: full width, fading out at the bottom where the text starts. */
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
 }
 /* Desktop: flush to the screen's right edge, so only the left side and bottom fade into the page. */
 @media (min-width: 1024px) {
@@ -95,6 +93,7 @@
     mask-image:
       linear-gradient(to right, transparent, #000 30%),
       linear-gradient(to top, transparent, #000 18%);
+    mask-composite: intersect;
   }
 }
 

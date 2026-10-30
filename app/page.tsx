@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-line">
+      <section className="relative flex flex-col overflow-hidden border-b border-line lg:block">
         {features.heroAura && (
           <div className="hero-aura pointer-events-none absolute inset-0" aria-hidden="true">
             <span className="hero-aura-sec" />
@@ -45,7 +45,7 @@ export default function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative z-10 mx-auto flex max-w-6xl items-center px-5 pb-12 pt-10 lg:min-h-[calc(100svh-4rem)] lg:py-16">
+        <div className="relative z-10 mx-auto -mt-20 flex w-full max-w-6xl items-center px-5 pb-12 lg:mt-0 lg:min-h-[calc(100svh-4rem)] lg:py-16">
           <div className="lg:w-[54%]">
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
@@ -96,10 +96,10 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        {/* Below the text on phones; on desktop it fills the hero's right side, flush to the screen edge,
-            and fades into the page on the left (see .hero-portrait). */}
+        {/* First thing on phones, full width with the text overlapping its faded bottom; on desktop it fills
+            the hero's right side, flush to the screen edge, and fades into the page on the left (see .hero-portrait). */}
         <div
-          className="rise relative mx-auto aspect-[993/1280] w-[calc(100%-2.5rem)] max-w-sm lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[46%] lg:max-w-none"
+          className="rise relative order-first h-[min(58svh,520px)] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[46%]"
           style={{ '--i': 2 } as React.CSSProperties}
         >
           <Image
@@ -107,7 +107,7 @@ export default function Home() {
             alt={`Portrait of ${site.name}`}
             fill
             priority
-            sizes="(min-width: 1024px) 46vw, 384px"
+            sizes="(min-width: 1024px) 46vw, 100vw"
             className="hero-portrait object-cover object-[50%_15%]"
           />
         </div>
