@@ -9,7 +9,6 @@ import { ContactForm } from './components/contact-form'
 import { CopyButton } from './components/copy-button'
 import { DecryptText } from './components/decrypt-text'
 import { features } from '@/lib/features'
-import { HeaderAudit } from './components/header-audit'
 import { HeroGlyphs } from './components/hero-glyphs'
 import { MethodFlow } from './components/method-flow'
 import { WorkGrid } from './components/work-grid'
@@ -46,7 +45,7 @@ export default function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative mx-auto grid max-w-6xl items-start gap-12 px-5 pb-20 pt-10 lg:grid-cols-[1.15fr_1fr]">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
@@ -57,26 +56,11 @@ export default function Home() {
                 <AnimatedShinyText className="mx-0">Available for new projects</AnimatedShinyText>
               </p>
             )}
-            <div className="rise mt-7 flex items-center gap-4" style={{ '--i': 1 } as React.CSSProperties}>
-              <span className="shrink-0 rounded-full bg-[conic-gradient(from_200deg,var(--sec),var(--web),var(--sec))] p-[2px]">
-                {/* Clipped circle; the photo is scaled up towards the face so it reads at avatar size. */}
-                <span className="block h-16 w-16 overflow-hidden rounded-full border-2 border-bg bg-surface md:h-20 md:w-20">
-                  <Image
-                    src={site.portrait}
-                    alt={`Portrait of ${site.name}`}
-                    width={240}
-                    height={240}
-                    priority
-                    className="h-full w-full origin-[50%_30%] scale-[1.6] object-cover object-[50%_20%]"
-                  />
-                </span>
-              </span>
-              <div>
-                <p className="text-lg font-semibold tracking-tight">{site.name}</p>
-                <p className="label mt-1">
-                  Senior <span className="text-sec">Cybersecurity</span> <span className="text-muted">&</span> <span className="text-web">Web</span> Developer
-                </p>
-              </div>
+            <div className="rise mt-8" style={{ '--i': 1 } as React.CSSProperties}>
+              <p className="text-lg font-semibold tracking-tight">{site.name}</p>
+              <p className="label mt-1">
+                Senior <span className="text-sec">Cybersecurity</span> <span className="text-muted">&</span> <span className="text-web">Web</span> Developer
+              </p>
             </div>
             <h1 className="rise mt-6 text-[clamp(2.6rem,6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.035em]" style={{ '--i': 2 } as React.CSSProperties}>
               {features.decryptHeadline ? <DecryptText text={site.headline[0]} delay={250} /> : site.headline[0]}
@@ -111,8 +95,17 @@ export default function Home() {
               ))}
             </ul>
           </div>
-          <div className="rise" style={{ '--i': 3 } as React.CSSProperties}>
-            <HeaderAudit />
+          {/* Large portrait whose edges fade into the page (see .hero-portrait). */}
+          <div className="rise relative mx-auto w-full max-w-sm lg:max-w-none" style={{ '--i': 2 } as React.CSSProperties}>
+            <Image
+              src={site.portrait}
+              alt={`Portrait of ${site.name}`}
+              width={993}
+              height={1280}
+              priority
+              sizes="(min-width: 1024px) 460px, 384px"
+              className="hero-portrait h-auto w-full"
+            />
           </div>
         </div>
       </section>
