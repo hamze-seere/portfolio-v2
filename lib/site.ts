@@ -1,7 +1,7 @@
 /* Everything personal lives here. Facts are taken from github.com/hamze-seere —
    keep them true when you edit. */
 
-export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://portfolio-hamze4.vercel.app'
+export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hamse-yo-xs.vercel.app'
 
 export const site = {
   name: 'Hamze Seere',
