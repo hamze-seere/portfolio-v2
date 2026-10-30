@@ -1,0 +1,13 @@
+node_modules
+.next
+next-env.d.ts
+*.tsbuildinfo
+.env*
+# separate repository, published on its own
+gns3-labs/
+
+.vercel
+.env*
+
+# local Claude Code preview config
+.claude

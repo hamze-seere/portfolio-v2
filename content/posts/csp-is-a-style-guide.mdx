@@ -1,0 +1,36 @@
+---
+title: Your CSP is a style guide for scripts
+publishedAt: 2026-06-02
+summary: A content security policy is a design constraint. Good constraints make better systems.
+track: both
+---
+
+A content security policy reads like a style guide written for scripts: these sources, these forms, nothing inline unless it carries the mark.
+
+Teams resist CSP for the same reason they resist design systems — it removes options. That is the point. Every option you remove is one an attacker no longer has.
+
+## Where to start
+
+1. Ship it in `Content-Security-Policy-Report-Only` mode.
+2. Read the violations like a design review — each one is a decision someone made without noticing.
+3. Tighten one directive a week until you can drop `unsafe-inline` for scripts.
+
+```js
+const policy = "script-src 'self' 'nonce-RANDOM' 'strict-dynamic'; object-src 'none'; base-uri 'none'"
+```
+
+A nonce-based policy with `strict-dynamic` is the modern default. This site runs one.
+
+<CodeComparison
+  filename="next.config.js"
+  afterFilename="proxy.ts"
+  beforeCode="headers: [{
+  key: 'Content-Security-Policy',
+  value: `script-src 'self' 'unsafe-inline' https://cdn.example.com`, // [!code --]
+}]"
+  afterCode="const nonce = btoa(crypto.randomUUID())
+response.headers.set(
+  'Content-Security-Policy',
+  `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'; object-src 'none'`, // [!code ++]
+)"
+/>

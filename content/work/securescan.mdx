@@ -1,0 +1,47 @@
+---
+title: SecureScan
+summary: A website security posture scanner — enter a URL, get an A+ to F report on TLS, headers, cookies, exposed files, email spoofing, DNS and CORS, with a plain-English fix for every issue.
+year: 2026
+track: both
+role: Solo — design, engineering, threat model
+client: Open source (MIT)
+stack: Next.js 16, React 19, TypeScript, Tailwind 4, Node tls/dns
+outcome: 9 check categories · zero-dependency scanner engine · 36 tests · CI-gated GitHub Action
+repo: https://github.com/hamze-seere/securescan
+live: https://securescan-hamze.vercel.app
+order: 0
+---
+
+## What it does
+
+SecureScan grades a website's security posture from **A+ to F**. Every finding comes with a plain-English explanation and a concrete fix, so the report is useful to the person who has to act on it — not just to a security engineer.
+
+- **Transport** — HTTPS, certificate validity and expiry, TLS version and cipher, HTTP→HTTPS redirects.
+- **Security headers** — HSTS, CSP *quality* analysis (`unsafe-inline`, wildcards, nonces, `strict-dynamic`), clickjacking, Referrer/Permissions policies, COOP.
+- **Cookies** — `Secure`, `HttpOnly`, `SameSite`, judged more strictly for session cookies.
+- **Exposed files** — `.env`, `.git/`, SQL dumps, `phpinfo.php` and more, with content signatures so soft-404 pages don't cause false positives.
+- **Email security** — SPF, DMARC policy and inheritance, DKIM across 20 common selectors, MX.
+- **DNS, CORS, mixed content and fingerprinting** — CAA, DNSSEC, reflected origins, versioned server headers, `security.txt`.
+
+On top of the scanner: shareable 30-day report links, a multi-page PDF export, and a **GitHub Action** that fails a deployment when the grade drops below a minimum.
+
+## The security problem inside the security tool
+
+A server that fetches any URL a stranger types in is itself an attack surface. I wrote a threat model before writing the scanner, and the design follows from it.
+
+- **SSRF** — the main threat. Only `http`/`https` on four ports; IPv4 and IPv6 private, loopback, metadata, CGNAT and mapped ranges are blocked; encoded tricks like `http://2130706433` are normalised first.
+- **DNS rebinding** — the IP is validated inside a custom `lookup` hook at socket-connect time, so the address checked is the address connected to. Every redirect hop is re-validated.
+- **Resource exhaustion** — per-IP rate limiting with `Retry-After`, strict timeouts, a five-redirect cap, and response size caps applied *after* decompression to stop zip bombs.
+- **Forged reports** — share links can only publish reports the server itself produced, keyed by unguessable UUIDs; shared pages are `noindex` and expire.
+- **XSS from scan results** — headers and cookie names are attacker-controlled, so everything renders through React with no `dangerouslySetInnerHTML`, behind a nonce CSP with `strict-dynamic`.
+
+## Engineering
+
+- The scanner engine has **zero runtime dependencies** — it is written directly on Node's `http`, `https`, `tls` and `dns` modules.
+- One module per check category, a separate scoring module, and an injectable DNS client so checks are testable offline.
+- **36 unit and integration tests**, including an end-to-end scan of a deliberately insecure server and an SSRF test suite.
+- CI runs tests, the production build and `npm audit` on every push; the project scans its own live deployment after every release and weekly.
+
+## Result
+
+Open source under MIT, live on Vercel, and used as its own security gate: a scheduled workflow scans the production deployment after every release and every week. Try it on a site you own — the live demo and source are linked above.

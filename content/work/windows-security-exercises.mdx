@@ -1,0 +1,35 @@
+---
+title: Windows Security Exercises
+summary: Hands-on endpoint and account security on Windows — a PowerShell password-strength checker, SHA-256 file integrity, an EICAR antivirus test, restore points and account recovery.
+year: 2026
+track: security
+role: Solo — scripting and documentation
+client: Self-directed practice
+stack: PowerShell, Microsoft Defender, Get-FileHash, Windows System Protection
+outcome: 5 documented exercises, each in its own repository
+repos: Password strength checker | https://github.com/hamze-seere/How-secure-is-my-password ; SHA-256 hashing | https://github.com/hamze-seere/SHA256-HASHING ; EICAR antivirus test | https://github.com/hamze-seere/EICAR-FILE-TEST ; System restore point | https://github.com/hamze-seere/System-Restore-point ; Recovery email setup | https://github.com/hamze-seere/Recovery-email
+order: 5
+---
+
+## PowerShell password-strength checker
+
+A script that rates a password from 1 to 5 on length (12+), uppercase, lowercase, numbers and special characters, then prints **STRONG**, **MEDIUM** or **WEAK** in colour.
+
+- Input is read with `Read-Host -AsSecureString`, so the password is never echoed to the screen.
+- Tested against a strong 13-character password (5/5) and a weak 3-character one (1/5).
+
+## SHA-256 file integrity
+
+Generating a SHA-256 hash of a file with PowerShell to verify it hasn't been altered — the same idea behind checking downloads against a published checksum.
+
+## EICAR antivirus test
+
+Downloaded the harmless, industry-standard EICAR test file from the official source to confirm that real-time protection works. Microsoft Defender detected and blocked it immediately.
+
+## System restore point
+
+Creating a restore point through both the System Protection GUI and PowerShell (`Checkpoint-Computer`), so a bad driver or software change can be rolled back without touching personal files.
+
+## Account recovery
+
+Adding and verifying a recovery email on a Google account, with notes on keeping recovery options separate and pairing them with 2-step verification.

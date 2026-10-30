@@ -1,0 +1,33 @@
+---
+title: GNS3 Networking Labs
+summary: Cisco networking labs built in GNS3 — OSPF routing, Spanning Tree root election, CDP discovery, Telnet remote access and switched topologies — each published with its topology, configs and a write-up.
+year: 2026
+track: security
+role: Solo — design, configuration, documentation
+client: Self-directed practice
+stack: GNS3, Cisco IOS (3725 / 3745), OSPF, STP, CDP, VPCS
+outcome: 6 labs published with topologies, redacted configs and verification steps
+repo: https://github.com/hamze-seere/gns3-labs
+order: 4
+---
+
+## Overview
+
+Security work depends on understanding the network underneath it. These labs build that foundation on emulated Cisco routers and switches in GNS3. Every lab is a complete project anyone can open, with the topology, the router configurations and the commands to verify it.
+
+## The labs
+
+- **OSPF single-area routing.** Three routers in a chain join two LANs. All of them advertise into OSPF area 0, so the PCs at 10.20.0.0/24 and 10.50.0.0/24 reach each other over dynamically learned routes.
+- **Spanning Tree root election.** Three switches cabled in a loop. SW1 is made root bridge (priority 4096), SW2 the backup root (8192), and PortFast speeds up host-facing ports.
+- **Remote access over Telnet.** VTY lines with login and an enable secret, documented with the reason Telnet should be replaced by SSH in production.
+- **CDP neighbour discovery.** Identifying directly connected Cisco devices, and when to switch CDP off on untrusted links.
+- **Loopback interfaces.** Always-up virtual interfaces used as stable router IDs and management addresses.
+- **Switched triangle.** Three switches in a layer-2 loop on VLAN 1, each with a management address.
+
+## Publishing it safely
+
+Before the labs went public, I removed everything that shouldn't leave the lab:
+
+- Every password and secret in the configs is replaced with `<redacted>`.
+- Packet captures are excluded. A Telnet capture shows the login in plain text.
+- Cisco IOS images and virtual-machine disks are excluded, and a `.gitignore` keeps them out for good.

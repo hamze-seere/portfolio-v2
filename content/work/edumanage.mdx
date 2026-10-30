@@ -1,0 +1,52 @@
+---
+title: EduManage
+summary: A complete school management system built for Gateway School — bilingual public website and a secure portal for staff, teachers, students and parents, covering attendance, exams, fees and homework, with authentication designed like a security product.
+year: 2026
+track: both
+role: Solo — architecture, full-stack development, security design
+client: Gateway School
+stack: Next.js 16, React 19, TypeScript, PostgreSQL, Prisma, Argon2id, Playwright
+outcome: Live on Netlify · 59 pages · 7 roles · 230 automated test cases
+live: https://gateway-school-so.netlify.app
+order: 1
+---
+
+## The goal
+
+Give a school one system for everything it runs: a public website for parents and applicants in **English and Somali**, and a private portal where administrators, registrars, accountants, teachers, students and guardians each see exactly what they're allowed to, and nothing more.
+
+## What it does
+
+- **Public website.** Programmes, departments, admissions with an **online admission form**, news, contact, FAQ, and an English/Somali language switch. Staff edit the pages from the portal.
+- **Students, staff and families.** Student records with enrolment history and status changes (suspend, transfer, graduate), staff profiles with teaching load, and guardians linked to their children.
+- **Academics.** Years, terms, departments, courses, subjects, classes, and a weekly **timetable** that blocks clashes for a class, teacher or room.
+- **Attendance.** Daily or per-lesson registers, edit windows for teachers, and per-student attendance reports.
+- **Exams and results.** Weighted gradebooks and mark sheets, A–F grade scales, class broadsheets and rankings. Results can only be published once every mark is in; publishing locks the marks and notifies families. Printable report cards.
+- **Fees.** Monthly invoicing for every student, one-off charges, discounts and scholarships, and payments by cash, **Zaad, eDahab, EVC Plus** or bank transfer. Payments are never deleted: corrections are recorded as reversals. Balances and overdue tracking.
+- **Homework and materials.** Teachers set assignments and share files; students and guardians follow progress.
+- **Running the school.** Announcements, a contact inbox, reports and an audit-log viewer.
+
+In all, 12 public pages and 47 portal pages.
+
+## Security design
+
+School systems hold children's personal data, so I treated access control as the core feature, not an add-on.
+
+- **Own authentication layer.** Random 256-bit session tokens stored only as SHA-256 hashes, HttpOnly and SameSite cookies, sliding and absolute expiry, and "sign out other devices". Passwords are hashed with Argon2id.
+- **Two-step sign-in** with codes by SMS, email or authenticator app, plus recovery codes. It's recommended for administrators and accountants.
+- **7 roles with least privilege.** On top of the roles, record-level scopes mean a teacher sees only their own classes, a guardian their own children, a student their own profile. Nobody can grant a role higher than their own or demote themselves.
+- **Brute-force protection.** Per-IP and per-email rate limits that can't be used to discover which accounts exist.
+- **Safe file uploads.** File types are checked by content, files are kept in private storage, and uploads and downloads use short-lived signed links. I wrote the AWS-style SigV4 request signer myself and tested it against Amazon's published examples.
+- **An audit trail for everything sensitive.** Sign-ins, mark changes, payments, exports and role changes are all logged, with secrets redacted.
+
+## Engineering
+
+- Strict TypeScript and Zod validation on every server action and route.
+- A layered design: pages call services, services call the database, and every service re-checks permissions.
+- A 58-model PostgreSQL database with versioned migrations.
+- 230 automated test cases in 26 files: unit, integration on a real PostgreSQL database, and Playwright end-to-end, all run in GitHub Actions CI.
+- Docker for local development, and written docs for architecture, database, security, deployment and operations.
+
+## Status
+
+The site is live on Netlify, in English and Somali. It runs on free hosting: Netlify for the site, Neon for the database and Backblaze B2 for files.

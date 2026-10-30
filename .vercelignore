@@ -1,0 +1,6 @@
+# Reference starters and the separately published labs repo; not part of the site.
+templates
+gns3-labs
+.claude
+# Local secrets (the CLI writes a token to .env.local); real env vars live in Vercel.
+.env*

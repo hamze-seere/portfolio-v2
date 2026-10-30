@@ -1,0 +1,18 @@
+---
+title: Threat modeling with a pencil
+publishedAt: 2026-02-19
+summary: The best threat models I have run started as sketches, not spreadsheets.
+track: security
+---
+
+The best threat models I have run started as drawings on paper, not rows in a spreadsheet.
+
+Drawing a data flow forces the room to agree on what the system *is* before arguing about what could go wrong. Boundaries become lines; trust becomes arrows crossing them.
+
+## The whole method
+
+- Draw the boxes: users, services, data stores.
+- Draw the lines between them.
+- For every line that crosses a trust boundary, ask: *what crosses here, and who could fake it?*
+
+The threats arrive on their own. The spreadsheet comes later, if at all.

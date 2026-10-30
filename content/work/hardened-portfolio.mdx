@@ -1,0 +1,37 @@
+---
+title: Hardened Portfolio
+summary: A personal site built to show polished front-end work and production-grade hardening at the same time — strict nonce CSP, full header set, zero third-party requests, and a page that explains every security decision.
+year: 2026
+track: both
+role: Solo — design, front-end, security
+client: Personal project
+stack: Next.js 16, React 19, TypeScript, Tailwind 4, MDX, Vercel
+outcome: Strict CSP with no unsafe-inline · zero third-party requests · CI with Dependabot
+repo: https://github.com/hamze-seere/portfolio
+live: https://portfolio-hamze4.vercel.app
+order: 2
+---
+
+## Goal
+
+A portfolio for someone who does both security and web development should prove both. This one is meant to look polished *and* to hold up when a security reviewer opens DevTools.
+
+## Security
+
+- **Strict Content Security Policy with per-request nonces** — `script-src 'nonce-…' 'strict-dynamic'`, no `unsafe-inline` or `unsafe-eval` for scripts.
+- **Full header set** — HSTS with preload, `nosniff`, Referrer-Policy, Permissions-Policy, X-Frame-Options, COOP, CORP, and no `X-Powered-By`.
+- **RFC 9116 `security.txt`**, generated from config.
+- **Zero third-party requests** — fonts self-hosted at build time; no analytics, embeds or CDNs.
+- **No inline theme script** — the dark/light choice lives in a cookie and is rendered on the server, so the right theme is in the first paint without weakening the CSP.
+- **Hardened contact form** — Origin-checked Server Action, honeypot, rate limiting with hashed IPs, schema validation, and a `mailto:` fallback.
+
+## Front-end
+
+- MDX case studies and posts, validated at build time, with build-time syntax highlighting that ships no client JavaScript.
+- Per-page metadata, generated Open Graph images, sitemap, robots and JSON-LD.
+- Accessibility built in: semantic landmarks, skip link, visible focus, WCAG AA colour tokens, `prefers-reduced-motion`, and filters and forms that work without JavaScript.
+- A short, justified dependency list — each runtime package has a written reason to exist.
+
+## Trade-off I documented
+
+A per-request nonce means HTML can't be pre-rendered at build time, so pages render per request. I chose the stronger CSP and wrote down why, instead of quietly accepting `unsafe-inline`.

@@ -1,0 +1,735 @@
+@import 'tailwindcss';
+
+/* ───────────────────────────────────────────────────────────
+   Break it / Build it. Dark-first, follows the OS light/dark
+   setting. Two semantic accents, never decorative:
+   --sec (orange-red) = security work · --web (blue) = web work.
+   ─────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-sans: var(--f-sans);
+  --font-mono: var(--f-mono);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-sec: var(--sec);
+  --color-web: var(--web);
+  --color-ok: var(--ok);
+}
+
+/* Magic UI animations (marquee, shine-border, animated-shiny-text). `inline`
+   so var(--duration) resolves on each element, not once at :root. */
+@theme inline {
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-shine: shine var(--duration) infinite linear;
+  --animate-shiny-text: shiny-text 8s infinite;
+  --animate-meteor: meteor 5s linear infinite;
+  --animate-border-beam: border-beam 6s linear infinite;
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+
+  @keyframes meteor {
+    0% { transform: rotate(var(--angle)) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(var(--angle)) translateX(-500px); opacity: 0; }
+  }
+  @keyframes border-beam {
+    from { offset-distance: var(--beam-from, 0%); }
+    to { offset-distance: var(--beam-to, 100%); }
+  }
+  @keyframes shimmer-slide {
+    to { transform: translate(calc(100cqw - 100%), 0); }
+  }
+  @keyframes spin-around {
+    0% { transform: translateZ(0) rotate(0); }
+    15%, 35% { transform: translateZ(0) rotate(90deg); }
+    65%, 85% { transform: translateZ(0) rotate(270deg); }
+    100% { transform: translateZ(0) rotate(360deg); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+  @keyframes marquee-vertical {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-100% - var(--gap))); }
+  }
+  /* Shine: moves a 300% layer, equivalent to background-position 0% → 100% → 0%. */
+  @keyframes shine {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-66.667%, -66.667%); }
+    to { transform: translate(0, 0); }
+  }
+  @keyframes shiny-text {
+    0%, 90%, 100% { background-position: calc(-100% - var(--shiny-width)) 0; }
+    30%, 60% { background-position: calc(100% + var(--shiny-width)) 0; }
+  }
+}
+
+/* Sections scrolled out of view (Effects sets [data-offscreen]) pause their
+   looping animations: marquee, meteors, beams, shine, pulses. */
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+  animation-play-state: paused !important;
+}
+
+/* Hero Glyph Matrix: kept quiet so it never competes with the headline. */
+.hero-glyphs {
+  opacity: 0.6;
+}
+:root[data-theme='light'] .hero-glyphs {
+  opacity: 0.4;
+}
+
+/* Reduced motion: the marquee stops scrolling, so show one copy, wrapped. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    flex-wrap: wrap;
+  }
+  .marquee > * {
+    animation: none;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    justify-content: flex-start;
+  }
+  .marquee > [data-copy] {
+    display: none;
+  }
+}
+
+:root {
+  --bg: #0a0c0f;
+  --surface: #11151a;
+  --surface-2: #171c23;
+  --line: #232a33;
+  --fg: #e8ecf1;
+  --muted: #8e98a6;
+  --sec: #ff5a36;
+  --web: #4f8cff;
+  --ok: #3dd68c;
+  color-scheme: dark;
+}
+
+/* Night is the default. Day is opt-in via the toggle (a `theme` cookie the
+   server renders as data-theme, so there's no inline script and no flash).
+   Day uses soft greys rather than pure white to keep glare down. */
+:root[data-theme='light'] {
+  --bg: #e9ecf0;
+  --surface: #f3f5f7;
+  --surface-2: #e1e5ea;
+  --line: #d3d8df;
+  --fg: #12161c;
+  --muted: #545e6b;
+  --sec: #cc3517;
+  --web: #2459d6;
+  --ok: #10804e;
+  color-scheme: light;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-width: 340px;
+}
+::selection {
+  background: var(--web);
+  color: #fff;
+}
+:focus-visible {
+  outline: 2px solid var(--web);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Fine engineering grid behind the hero. */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  /* Snap a vertical line to the content's left edge (max-w-6xl container, 1.25rem gutter)
+     so the logo, pill and headline sit on the grid instead of near it. */
+  background-position: calc(max(0px, (100% - 72rem) / 2) + 1.25rem) 0;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+}
+
+/* In the components layer so colour utilities (text-sec / text-web) can override it. */
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+
+/* Entrance: one soft rise, staggered by --i. */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  .caret::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: currentColor;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+/* ── Optional effects (switches in lib/features.ts) ──────── */
+
+/* Scroll reveal: Effects adds .reveal-pending with JS, so no-JS stays visible. */
+[data-reveal] {
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-reveal].reveal-pending {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* Spotlight: a soft glow at the cursor (--mx/--my set by Effects) and a brighter border. */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 0.25s ease-out,
+    border-color 0.2s;
+  will-change: transform;
+}
+[data-spotlight]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--web) 14%, transparent), transparent 65%);
+}
+[data-spotlight][data-spot-on]::before {
+  opacity: 1;
+}
+[data-spotlight][data-spot-on] {
+  border-color: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+/* Hero aura: a red (security) and a blue (web) glow drifting behind the hero. */
+.hero-aura > span {
+  position: absolute;
+  width: min(620px, 80vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.2;
+}
+.hero-aura-sec {
+  left: -10%;
+  top: -25%;
+  background: var(--sec);
+}
+.hero-aura-web {
+  right: -12%;
+  top: 5%;
+  background: var(--web);
+}
+:root[data-theme='light'] .hero-aura > span {
+  opacity: 0.12;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-aura-sec {
+    animation: aura-a 22s ease-in-out infinite alternate;
+  }
+  .hero-aura-web {
+    animation: aura-b 26s ease-in-out infinite alternate;
+  }
+  @keyframes aura-a {
+    to {
+      transform: translate(14%, 18%) scale(1.12);
+    }
+  }
+  @keyframes aura-b {
+    to {
+      transform: translate(-16%, -10%) scale(0.92);
+    }
+  }
+}
+
+/* Gradient headline: red → blue, the site's two disciplines. */
+.headline-gradient {
+  background: linear-gradient(90deg, var(--sec), color-mix(in srgb, var(--sec) 35%, var(--web)) 45%, var(--web));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* keep descenders from being clipped */
+  padding-bottom: 0.08em;
+}
+
+/* Track colours: red = security, blue = web, split = both. */
+.track-bar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  pointer-events: none;
+}
+.track-bar[data-track='security'] {
+  background: var(--sec);
+}
+.track-bar[data-track='web'] {
+  background: var(--web);
+}
+.track-bar[data-track='both'] {
+  background: linear-gradient(90deg, var(--sec) 50%, var(--web) 50%);
+}
+.track-tint[data-track='security'] {
+  background: radial-gradient(60% 120% at 0% 0%, color-mix(in srgb, var(--sec) 10%, transparent), transparent);
+}
+.track-tint[data-track='web'] {
+  background: radial-gradient(60% 120% at 0% 0%, color-mix(in srgb, var(--web) 10%, transparent), transparent);
+}
+.track-tint[data-track='both'] {
+  background:
+    radial-gradient(50% 120% at 0% 0%, color-mix(in srgb, var(--sec) 9%, transparent), transparent),
+    radial-gradient(50% 120% at 100% 0%, color-mix(in srgb, var(--web) 9%, transparent), transparent);
+}
+
+/* Card hover lift — uses `translate`, so it stacks with the spotlight's tilt `transform`. */
+@media (prefers-reduced-motion: no-preference) {
+  .card-lift {
+    transition:
+      translate 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.2s,
+      box-shadow 0.25s;
+  }
+  .card-lift:hover {
+    translate: 0 -3px;
+    box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.6);
+  }
+}
+.card-lift .track-bar {
+  transition:
+    height 0.2s,
+    filter 0.2s;
+}
+.card-lift:hover .track-bar {
+  height: 4px;
+  filter: brightness(1.25) saturate(1.1);
+}
+
+/* Bento cards: a fine dot texture fades in on hover (always on for the featured tile). */
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--fg) 7%, transparent) 1px, transparent 1px) 0 0 / 5px 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.bento-card {
+  isolation: isolate;
+}
+.bento-card:hover::after,
+.bento-card[data-featured]::after {
+  opacity: 1;
+}
+/* Day: dark dots read as grain on a light card, so keep them fainter and further apart. */
+:root[data-theme='light'] .bento-card::after {
+  background: radial-gradient(circle, color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px) 0 0 / 7px 7px;
+}
+
+/* Glowing border (after Aceternity's GlowingEffect): a red → blue light on the card's
+   edge. JS sets --start (angle to the cursor) and --active; CSS eases the movement. */
+@property --start {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+.glow-border {
+  --spread: 40;
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  border-radius: 17px; /* rounded-2xl + the 1px it sits outside the card */
+  pointer-events: none;
+  opacity: var(--active, 0);
+  transition: opacity 0.3s;
+  /* Only the arc of the ring that faces the cursor. */
+  -webkit-mask: conic-gradient(from calc((var(--start) - var(--spread)) * 1deg), #0000 0deg, #000, #0000 calc(var(--spread) * 2deg));
+  mask: conic-gradient(from calc((var(--start) - var(--spread)) * 1deg), #0000 0deg, #000, #0000 calc(var(--spread) * 2deg));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .glow-border {
+    transition:
+      opacity 0.3s,
+      --start 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: repeating-conic-gradient(from 236.84deg at 50% 50%, var(--sec) 0%, var(--web) 10%, var(--sec) 20%) fixed;
+  /* Cut out the middle, leaving a 2px ring. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+/* Day: a thin coloured line disappears on a light page, so thicken the ring and give it
+   a soft halo. The element grows by 10px so the arc mask doesn't cut the halo off. */
+:root[data-theme='light'] .glow-border {
+  inset: -10px;
+  border-radius: 26px;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--sec) 50%, var(--web)));
+}
+:root[data-theme='light'] .glow-border::after {
+  inset: 9px;
+  border-radius: 17px;
+  padding: 3px;
+}
+
+/* Writing list (after Hyperiux's Interactive List Preview): a bar slides to the hovered
+   row and inverts it, and the post's card opens from its centre beside it. JS sets
+   --row-y / --row-h. Pointer devices only; touch keeps the plain list. */
+.writing-bar,
+.writing-preview {
+  display: none;
+}
+@media (pointer: fine) {
+  .writing-bar {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 0;
+    height: var(--row-h, 0);
+    translate: 0 var(--row-y, 0);
+    border: 0;
+    border-radius: 10px;
+    background: var(--fg);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      height 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.25s;
+  }
+  .writing-list[data-active] .writing-bar {
+    opacity: 1;
+  }
+  .writing-row {
+    transition: color 0.3s;
+  }
+  .writing-row[data-active] {
+    color: var(--bg);
+  }
+  .writing-row[data-active] .text-muted {
+    color: color-mix(in srgb, var(--bg) 68%, transparent);
+  }
+  .writing-row[data-active] .border-line {
+    border-color: color-mix(in srgb, var(--bg) 30%, transparent);
+  }
+  /* The bar replaces the dividers next to the active row. */
+  .writing-row[data-active],
+  .writing-row:has(+ .writing-row[data-active]) {
+    border-color: transparent;
+  }
+}
+@media (pointer: fine) and (min-width: 1024px) {
+  .writing-preview {
+    display: block;
+    position: absolute;
+    top: calc(var(--row-y, 0px) + var(--row-h, 0px) / 2);
+    right: 9rem;
+    z-index: 20;
+    width: 20rem;
+    aspect-ratio: 1200 / 630;
+    translate: 0 -50%;
+    pointer-events: none;
+    border: 0;
+    transition: top 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .writing-preview-inner {
+    position: absolute;
+    inset: 0;
+  }
+  .writing-preview img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 24px 50px -20px rgb(0 0 0 / 0.55);
+    outline: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
+    clip-path: inset(50% round 10px);
+    opacity: 0;
+    transition:
+      clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.6s;
+  }
+  .writing-preview img[data-active] {
+    z-index: 1;
+    clip-path: inset(0% round 10px);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .writing-bar,
+  .writing-preview,
+  .writing-preview img {
+    transition: opacity 0.2s;
+  }
+  .writing-preview img {
+    clip-path: none;
+  }
+}
+
+/* How I work: a red → blue line running through the four steps. */
+.method-flow {
+  position: relative;
+}
+.method-flow::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 1;
+  background: linear-gradient(90deg, var(--sec), var(--web));
+}
+.method-num {
+  /* --t runs 0 → 1 across the steps: red at the start, blue at the end */
+  color: color-mix(in srgb, var(--web) calc(var(--t) * 100%), var(--sec));
+}
+.method-dot {
+  background: color-mix(in srgb, var(--web) calc(var(--t) * 100%), var(--sec));
+  box-shadow: 0 0 0 4px var(--surface);
+}
+
+/* Footer: the same red → blue line along its top edge. */
+.footer-flow {
+  position: relative;
+}
+.footer-flow::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sec), var(--web));
+  opacity: 0.7;
+}
+
+/* Timeline: gradient spine, dots coloured by the kind of work. */
+.timeline-spine {
+  background: linear-gradient(180deg, var(--ok), var(--sec) 35%, var(--web));
+  opacity: 0.55;
+}
+.timeline-dot[data-track='security'] {
+  background: var(--sec);
+}
+.timeline-dot[data-track='web'] {
+  background: var(--web);
+}
+.timeline-dot[data-track='both'] {
+  background: linear-gradient(90deg, var(--sec) 50%, var(--web) 50%);
+}
+.timeline-dot[data-track='now'] {
+  background: var(--ok);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .timeline-dot[data-track='now']::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 9999px;
+    background: var(--ok);
+    animation: now-pulse 2s ease-out infinite;
+  }
+  @keyframes now-pulse {
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+}
+
+/* Command palette (native <dialog>). */
+.palette::backdrop {
+  background: rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(3px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .palette[open] {
+    animation: palette-in 0.16s ease-out;
+  }
+  @keyframes palette-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+  }
+}
+
+/* Page transitions: a quick cross-fade (React <ViewTransition>, Next 16). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+}
+::view-transition-group(.morph) {
+  animation-duration: 0.4s;
+}
+/* Theme switch (Magic UI theme toggler): no cross-fade, the new theme is
+   revealed by a clip-path animated from the toggle button. */
+:root[data-magicui-theme-vt='active']::view-transition-old(root),
+:root[data-magicui-theme-vt='active']::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+:root[data-magicui-theme-vt='active']::view-transition-new(root) {
+  clip-path: var(--magicui-theme-vt-clip-from);
+}
+:root[data-magicui-theme-vt='active']::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ── Long-form (MDX) ─────────────────────────────────────── */
+.prose {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2,
+.prose h3 {
+  color: var(--fg);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 2.2em;
+  scroll-margin-top: 90px;
+}
+.prose h2 {
+  font-size: 1.5rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+}
+.prose .anchor {
+  position: absolute;
+  margin-left: -1em;
+  padding-right: 0.4em;
+  color: var(--muted);
+  opacity: 0;
+  text-decoration: none;
+}
+.prose .anchor::after {
+  content: '#';
+}
+.prose h2:hover .anchor,
+.prose h3:hover .anchor {
+  opacity: 1;
+}
+.prose strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.prose a {
+  color: var(--web);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+.prose ul {
+  list-style: square;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+.prose li::marker {
+  color: var(--sec);
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--fg);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+}
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  overflow-x: auto;
+}
+
+/* sugar-high syntax colours */
+:root {
+  --sh-class: #7aa2ff;
+  --sh-identifier: var(--fg);
+  --sh-sign: var(--muted);
+  --sh-string: #3dd68c;
+  --sh-keyword: #ff7a5c;
+  --sh-comment: #6b7480;
+  --sh-jsxliterals: #b18cff;
+  --sh-property: #ffb454;
+  --sh-entity: #ffb454;
+}
