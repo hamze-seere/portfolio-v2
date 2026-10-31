@@ -95,6 +95,11 @@
       linear-gradient(to top, transparent, #000 18%);
     mask-composite: intersect;
   }
+  /* Day: the dark studio backdrop fading over a pale page turns into a grey smear, so the
+     photo stays a crisp full-height panel instead. */
+  :root[data-theme='light'] .hero-portrait {
+    mask-image: none;
+  }
 }
 
 /* Faded out at the top so the name, photo and headline stay clean. */
