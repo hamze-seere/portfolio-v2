@@ -217,6 +217,42 @@ body {
       transform: translateY(14px);
     }
   }
+  /* Hero photo settles in from a slight zoom, then drifts down a little as the page
+     scrolls (parallax). Only scale/translate animate, so it stays on the compositor. */
+  .hero-portrait {
+    animation: portrait-in 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @keyframes portrait-in {
+    from {
+      scale: 1.08;
+    }
+  }
+  @supports (animation-timeline: scroll()) {
+    .hero-portrait {
+      animation:
+        portrait-in 1.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+        portrait-drift linear both;
+      animation-timeline: auto, scroll(root);
+      animation-range: normal, 0 600px;
+    }
+    @keyframes portrait-drift {
+      to {
+        translate: 0 120px;
+      }
+    }
+  }
+  /* Primary button: a light sweep and an arrow nudge on hover. */
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, color-mix(in oklab, var(--bg) 30%, transparent) 50%, transparent 65%);
+    translate: -100% 0;
+    transition: translate 0.6s ease;
+  }
+  .btn-shine:hover::after {
+    translate: 100% 0;
+  }
   .caret::after {
     content: '';
     display: inline-block;

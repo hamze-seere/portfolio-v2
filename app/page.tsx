@@ -78,8 +78,11 @@ export default async function Home() {
               {site.intro}
             </p>
             <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 4 } as React.CSSProperties}>
-              <Link href="/work" className="rounded-lg bg-fg px-5 py-3 font-medium text-bg transition-opacity hover:opacity-85">
-                See the work
+              <Link href="/work" className="btn-shine group relative overflow-hidden rounded-lg bg-fg px-5 py-3 font-medium text-bg transition-opacity hover:opacity-90">
+                See the work{' '}
+                <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none">
+                  →
+                </span>
               </Link>
               <Link href="/#contact" className="rounded-lg border border-line bg-surface px-5 py-3 font-medium transition-colors hover:border-muted/60">
                 Book a security review
