@@ -24,8 +24,8 @@ export function Safari({ src, url, alt, sizes, className }: SafariProps) {
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         </span>
-        <span className="mx-auto max-w-[70%] truncate rounded-md bg-bg/60 px-3 py-0.5 font-mono text-[11px] text-muted">{url}</span>
-        <span className="w-[42px]" />
+        <span className="mx-auto min-w-0 max-w-[70%] truncate rounded-md bg-bg/60 px-3 py-0.5 font-mono text-[11px] text-muted">{url}</span>
+        <span className="w-[42px] shrink-0" />
       </div>
       <Image src={src} alt={alt} width={1280} height={800} sizes={sizes} className="block h-auto w-full" />
     </div>

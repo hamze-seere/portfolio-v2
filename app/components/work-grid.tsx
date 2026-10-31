@@ -91,7 +91,7 @@ export function WorkGrid({ items }: { items: Item[] }) {
           // On two columns, feature the first card full-width only when that leaves the rest in even rows.
           const mdSpan = i === 0 && shown.length % 2 === 1 ? 'md:col-span-2' : ''
           return (
-            <li key={slug} className={`card-lift relative rounded-2xl ${mdSpan} ${LG_SPAN[spans[i]]}`}>
+            <li key={slug} className={`card-lift relative min-w-0 rounded-2xl ${mdSpan} ${LG_SPAN[spans[i]]}`}>
               {features.glowCards && <span data-glow className="glow-border" aria-hidden="true" />}
               <Link
                 href={`/work/${slug}`}

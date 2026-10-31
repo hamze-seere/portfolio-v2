@@ -87,6 +87,10 @@
   /* Phones: full width, fading out at the bottom where the text starts. */
   mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
 }
+/* Day: the black suit would fade to grey over the pale page, so it ends crisply instead. */
+:root[data-theme='light'] .hero-portrait {
+  mask-image: none;
+}
 /* Desktop: flush to the screen's right edge, so only the left side and bottom fade into the page. */
 @media (min-width: 1024px) {
   .hero-portrait {
