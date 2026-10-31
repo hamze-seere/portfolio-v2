@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
 import { BorderBeam } from '@/components/ui/border-beam'
@@ -12,6 +12,7 @@ import { CopyButton } from './components/copy-button'
 import { DecryptText } from './components/decrypt-text'
 import { features } from '@/lib/features'
 import { HeroGlyphs } from './components/hero-glyphs'
+import { HeroPortrait } from './components/hero-portrait'
 import { MethodFlow } from './components/method-flow'
 import { WorkGrid } from './components/work-grid'
 import { WritingList } from './components/writing-list'
@@ -32,7 +33,8 @@ function SectionHead({ id, kicker, title, children }: { id: string; kicker: stri
   )
 }
 
-export default function Home() {
+export default async function Home() {
+  const theme = (await cookies()).get('theme')?.value === 'light' ? 'light' : 'dark'
   const work = getWork()
   const posts = getPosts().slice(0, 3)
 
@@ -107,14 +109,7 @@ export default function Home() {
           className="rise relative order-first h-[min(58svh,520px)] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[46%]"
           style={{ '--i': 2 } as React.CSSProperties}
         >
-          <Image
-            src={site.portrait}
-            alt={`Portrait of ${site.name}`}
-            fill
-            priority
-            sizes="(min-width: 1024px) 46vw, 100vw"
-            className="hero-portrait object-cover object-[50%_15%]"
-          />
+          <HeroPortrait initial={theme} />
         </div>
       </section>
 
