@@ -62,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // Night by default; day only when the visitor chose it with the toggle.
   const theme = (await cookies()).get('theme')?.value === 'light' ? 'light' : 'dark'
   return (
-    <html lang="en" data-theme={theme} className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" data-theme={theme} data-scroll-behavior="smooth" className={`${sans.variable} ${mono.variable}`}>
       <body className="bg-bg text-fg antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-bg">
           Skip to content

@@ -20,7 +20,9 @@ export function Effects({ reveal, spotlight }: { reveal: boolean; spotlight: boo
   useEffect(() => {
     if (!reveal || matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const sections = [...document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-revealed])')]
+    // Arriving on /#section from another page: that section is shown straight away.
+    const linked = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)))?.closest('[data-reveal]')
+    const sections = [...document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-revealed])')].filter((el) => el !== linked)
     const counters = [...document.querySelectorAll<HTMLElement>('[data-count]:not([data-counted])')]
     sections.forEach((el) => el.classList.add('reveal-pending'))
 
@@ -66,6 +68,35 @@ export function Effects({ reveal, spotlight }: { reveal: boolean; spotlight: boo
       sections.forEach((el) => el.classList.remove('reveal-pending'))
     }
   }, [reveal, pathname])
+
+  // In-page links (/#services, /#contact …) glide to their section. The section is revealed
+  // instantly before the scroll starts: a section still easing in sits 18px low, which would
+  // make the scroll land short and then shift, and would fade in only after arriving.
+  useEffect(() => {
+    if (pathname !== '/') return
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="/#"], a[href^="#"]')
+      const target = a?.hash && document.getElementById(decodeURIComponent(a.hash.slice(1)))
+      if (!a || !target) return
+      e.preventDefault()
+      const section = target.closest<HTMLElement>('[data-reveal]')
+      if (section) {
+        section.style.transition = 'none'
+        section.classList.remove('reveal-pending')
+        section.dataset.revealed = ''
+        void section.offsetHeight
+        section.style.removeProperty('transition')
+      }
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+      if (!target.matches('a, button, input, textarea, select, [tabindex]')) target.setAttribute('tabindex', '-1')
+      target.focus({ preventScroll: true })
+      if (location.hash !== a.hash) history.pushState(null, '', a.hash)
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [pathname])
 
   // Pause looping animations in sections that are scrolled out of view.
   useEffect(() => {
