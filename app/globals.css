@@ -95,6 +95,11 @@
       linear-gradient(to top, transparent, #000 18%);
     mask-composite: intersect;
   }
+  /* Day: the white backdrop needs only a short edge, and the black suit would smear grey
+     if it faded into the pale page, so the bottom stays solid on the hero's border. */
+  :root[data-theme='light'] .hero-portrait {
+    mask-image: linear-gradient(to right, transparent, #000 12%);
+  }
 }
 
 /* Faded out at the top so the name, photo and headline stay clean. */
