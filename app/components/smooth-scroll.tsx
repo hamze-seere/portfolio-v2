@@ -21,7 +21,8 @@ export function scrollToElement(el: HTMLElement) {
 export function SmoothScroll() {
   useEffect(() => {
     if (!matchMedia('(pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    lenis = new Lenis({ autoRaf: true, lerp: 0.12, stopInertiaOnNavigate: true })
+    // A light touch: lerp 0.25 catches up in about a sixth of a second, so it eases without feeling heavy.
+    lenis = new Lenis({ autoRaf: true, lerp: 0.25, stopInertiaOnNavigate: true })
     return () => {
       lenis?.destroy()
       lenis = null
