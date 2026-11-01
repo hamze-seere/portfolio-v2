@@ -41,7 +41,7 @@ export const scanFeed = [
 
 // One-line proof under the hero buttons: [project, what backs it up].
 export const proof = [
-  ['SecureScan', '36 tests · open source'],
+  ['SecureScan', '87 tests · open source'],
   ['EduManage', '230 tests · live for a school'],
   ['Telesom', 'teaching cybersecurity'],
 ] as const
@@ -49,7 +49,7 @@ export const proof = [
 export const stats = [
   { value: '17', label: 'Public repositories' },
   { value: '9', label: 'Check categories in SecureScan' },
-  { value: '36', label: 'Automated tests in SecureScan' },
+  { value: '87', label: 'Automated tests in SecureScan' },
   { value: '14', label: 'Security & networking labs' },
 ]
 
@@ -90,7 +90,7 @@ export const method = [
 export const experience = [
   { period: 'Now', track: 'now', role: 'Cyber Security Instructor', org: 'Telesom', note: 'Teaching cybersecurity.' },
   { period: 'Oct 2026', track: 'both', role: 'Built EduManage for Gateway School', org: 'School management system', note: 'Bilingual school website and portal: attendance, exams, fees and homework, with two-step sign-in and 230 automated tests.' },
-  { period: 'Oct 2026', track: 'both', role: 'Built and shipped SecureScan', org: 'Open-source project', note: 'Website security scanner with a written threat model, 36 tests and a GitHub Action.' },
+  { period: 'Oct 2026', track: 'both', role: 'Built and shipped SecureScan', org: 'Open-source project', note: 'Website security scanner with a written threat model, 87 tests and a GitHub Action.' },
   { period: 'Oct 2026', track: 'security', role: 'GNS3 networking labs', org: 'Self-directed', note: 'OSPF, Spanning Tree, CDP and Telnet labs on emulated Cisco routers and switches.' },
   { period: 'Oct 2026', track: 'both', role: 'Built a hardened portfolio', org: 'Personal project', note: 'Strict nonce CSP, full security headers and zero third-party requests on Next.js 16.' },
   { period: 'Sep 2026', track: 'security', role: 'Cybersecurity coursework', org: 'Somali National University', note: 'Labs in attack surface, incident impact, CIA controls, hardening and networking.' },
