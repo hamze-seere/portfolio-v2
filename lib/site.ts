@@ -103,3 +103,24 @@ export const toolbox = [
   { group: 'Frontend', track: 'web', items: ['TypeScript', 'React 19', 'Next.js 16', 'Tailwind CSS', 'MDX'] },
   { group: 'Backend & tooling', track: 'web', items: ['Node.js (http, tls, dns)', 'GitHub Actions', 'Vercel', 'Upstash Redis', 'node:test'] },
 ] as const
+
+// DEMO DATA — placeholders to show the layout, not real credentials. Each one renders a
+// "Demo" badge. Replace an entry with a real certificate (and set demo: false, or delete the
+// field) once you have it; add `href` with the issuer's verification link if there is one.
+export const certificates: {
+  name: string
+  issuer: string
+  issued: string
+  id: string
+  track: 'security' | 'web' | 'both'
+  skills: readonly string[]
+  href?: string
+  demo?: boolean
+}[] = [
+  { name: 'Security+', issuer: 'CompTIA', issued: '2026', id: 'DEMO-SEC-0001', track: 'security', skills: ['Threats', 'Network security', 'Incident response'], demo: true },
+  { name: 'CCNA', issuer: 'Cisco', issued: '2026', id: 'DEMO-CCNA-0002', track: 'security', skills: ['Routing', 'Switching', 'OSPF'], demo: true },
+  { name: 'Certified in Cybersecurity (CC)', issuer: 'ISC2', issued: '2026', id: 'DEMO-CC-0003', track: 'security', skills: ['Security principles', 'Access control'], demo: true },
+  { name: 'Google Cybersecurity Certificate', issuer: 'Google', issued: '2026', id: 'DEMO-GCC-0004', track: 'security', skills: ['SIEM', 'Linux', 'Python'], demo: true },
+  { name: 'Responsive Web Design', issuer: 'freeCodeCamp', issued: '2026', id: 'DEMO-RWD-0005', track: 'web', skills: ['HTML', 'CSS', 'Accessibility'], demo: true },
+  { name: 'Web Security Fundamentals', issuer: 'OWASP', issued: '2026', id: 'DEMO-OWASP-0006', track: 'both', skills: ['OWASP Top 10', 'Secure headers'], demo: true },
+]

@@ -820,3 +820,23 @@ body {
   --sh-property: #ffb454;
   --sh-entity: #ffb454;
 }
+
+/* Certificates: a seal tinted by track, and a thin top bar like the project cards. */
+.cert-seal {
+  color: var(--cert);
+  background: color-mix(in oklab, var(--cert) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--cert) 45%, transparent);
+}
+.cert-card { --cert: var(--web); }
+.cert-card[data-track='security'] { --cert: var(--sec); }
+.cert-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--cert);
+  opacity: 0.7;
+}
+.cert-card[data-track='both']::after {
+  background: linear-gradient(90deg, var(--sec), var(--web));
+}

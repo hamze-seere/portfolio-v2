@@ -17,7 +17,7 @@ import { MethodFlow } from './components/method-flow'
 import { WorkGrid } from './components/work-grid'
 import { WritingList } from './components/writing-list'
 import { formatDate, getPosts, getWork } from '@/lib/content'
-import { experience, focus, method, proof, services, site, stats, toolbox } from '@/lib/site'
+import { certificates, experience, focus, method, proof, services, site, stats, toolbox } from '@/lib/site'
 
 function SectionHead({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
   return (
@@ -219,6 +219,48 @@ export default async function Home() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* ── Certificates ───────────────────────────────── */}
+        <section data-reveal aria-labelledby="certificates" className="border-t border-line py-24">
+          <SectionHead id="certificates" kicker="Certificates" title="Credentials on record.">
+            {certificates.some((c) => c.demo) && (
+              <p className="max-w-xs text-sm text-muted">Entries marked Demo are placeholders while real certificates are added.</p>
+            )}
+          </SectionHead>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {certificates.map((c) => (
+              <li key={c.id} className="card-lift min-w-0">
+                <article data-spotlight data-track={c.track} className="cert-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="cert-seal grid h-11 w-11 shrink-0 place-items-center rounded-full font-mono text-sm font-semibold" aria-hidden="true">
+                      {c.issuer.slice(0, 2).toUpperCase()}
+                    </span>
+                    {c.demo && <span className="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-muted">Demo</span>}
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold leading-snug">{c.name}</h3>
+                  <p className="text-sm text-muted">
+                    {c.issuer} · {c.issued}
+                  </p>
+                  <ul className="mb-6 mt-4 flex flex-wrap gap-1.5">
+                    {c.skills.map((s) => (
+                      <li key={s} className="rounded-md bg-surface-2 px-2 py-1 font-mono text-xs">
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
+                    <p className="truncate font-mono text-xs text-muted">ID {c.id}</p>
+                    {c.href && (
+                      <a href={c.href} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-muted hover:text-fg">
+                        Verify ↗
+                      </a>
+                    )}
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* ── Writing ────────────────────────────────────── */}

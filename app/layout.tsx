@@ -18,6 +18,7 @@ function paletteItems(): PaletteItem[] {
     { id: 'page:work', label: 'All work', group: 'Pages', href: '/work' },
     { id: 'page:services', label: 'Services', group: 'Pages', href: '/#services' },
     { id: 'page:timeline', label: 'Timeline', group: 'Pages', href: '/#experience' },
+    { id: 'page:certificates', label: 'Certificates', group: 'Pages', href: '/#certificates' },
     { id: 'page:writing', label: 'Writing', group: 'Pages', href: '/blog' },
     { id: 'page:contact', label: 'Contact', group: 'Pages', href: '/#contact' },
     ...getWork().map((w) => ({ id: `work:${w.slug}`, label: w.metadata.title, group: 'Projects' as const, hint: w.metadata.track === 'both' ? 'security + web' : w.metadata.track, href: `/work/${w.slug}` })),
