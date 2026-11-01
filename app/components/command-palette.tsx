@@ -31,7 +31,7 @@ export function PaletteButton() {
       type="button"
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
       aria-label="Search the site"
-      className="flex items-center gap-2 rounded-md p-2 text-muted transition-colors hover:text-fg md:border md:border-line md:px-2.5 md:py-1.5"
+      className="flex items-center gap-2 rounded-full p-2 text-muted transition-colors hover:text-fg md:border md:border-line md:px-2.5 md:py-1.5"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7" />
