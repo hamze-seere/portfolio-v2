@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 
 /* ───────────────────────────────────────────────────────────
-   Break it / Build it. One dark palette (no theme switch).
+   Break it / Build it. Night palette by default, day palette on
+   html[data-theme="light"] (the nav's sun / moon button).
    Two semantic accents, never decorative:
    --sec (violet) = security work · --web (blue) = web work.
    ─────────────────────────────────────────────────────────── */
@@ -131,7 +132,44 @@
   --sec: #a78bfa;
   --web: #60a5fa;
   --ok: #4ade80;
+  /* Solid fill for things that sit over the page (palette, floating nav). */
+  --panel: #100d27;
+  --panel-glass: rgb(16 13 39 / 0.6);
+  --grad-a: #c4b5fd;
+  --grad-b: #818cf8;
+  --glow-a: rgb(124 58 237 / 0.28);
+  --glow-b: rgb(37 99 235 / 0.22);
+  --glow-c: rgb(109 40 217 / 0.14);
   color-scheme: dark;
+}
+
+/* Day: soft lavender-white paper, same violet / blue accents a few shades deeper
+   so they keep their contrast on a light background. */
+:root[data-theme='light'] {
+  --bg: #f6f5fc;
+  --surface: rgb(255 255 255 / 0.7);
+  --surface-2: rgb(237 233 254 / 0.75);
+  --line: rgb(76 64 160 / 0.14);
+  --fg: #16132f;
+  --muted: #5c5978;
+  --sec: #7c3aed;
+  --web: #2563eb;
+  --ok: #16a34a;
+  --panel: #ffffff;
+  --panel-glass: rgb(255 255 255 / 0.72);
+  --grad-a: #6d28d9;
+  --grad-b: #4f46e5;
+  --glow-a: rgb(167 139 250 / 0.3);
+  --glow-b: rgb(96 165 250 / 0.22);
+  --glow-c: rgb(196 181 253 / 0.2);
+  --sh-class: #1d4ed8;
+  --sh-string: #15803d;
+  --sh-keyword: #6d28d9;
+  --sh-comment: #8a87a6;
+  --sh-jsxliterals: #a21caf;
+  --sh-property: #b45309;
+  --sh-entity: #b45309;
+  color-scheme: light;
 }
 
 /* Two soft glows fixed behind the page: violet top-left, blue right. */
@@ -145,9 +183,9 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(55vw 55vh at -5% -10%, rgb(124 58 237 / 0.28), transparent 70%),
-    radial-gradient(45vw 60vh at 105% 35%, rgb(37 99 235 / 0.22), transparent 70%),
-    radial-gradient(40vw 40vh at 30% 110%, rgb(109 40 217 / 0.14), transparent 70%);
+    radial-gradient(55vw 55vh at -5% -10%, var(--glow-a), transparent 70%),
+    radial-gradient(45vw 60vh at 105% 35%, var(--glow-b), transparent 70%),
+    radial-gradient(40vw 40vh at 30% 110%, var(--glow-c), transparent 70%);
 }
 
 html {
@@ -377,7 +415,7 @@ body {
 
 /* Gradient headline: red → blue, the site's two disciplines. */
 .headline-gradient {
-  background: linear-gradient(90deg, #c4b5fd, var(--sec) 35%, #818cf8 65%, var(--web));
+  background: linear-gradient(90deg, var(--grad-a), var(--sec) 35%, var(--grad-b) 65%, var(--web));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -665,7 +703,7 @@ body {
 /* Command palette (native <dialog>). */
 /* The palette sits over the page, so unlike the glass cards it gets a solid fill. */
 .palette {
-  background: #100d27;
+  background: var(--panel);
 }
 .palette::backdrop {
   background: rgb(0 0 0 / 0.55);
@@ -859,7 +897,7 @@ body {
 .nav-pill:is([data-mode='float'], [data-mode='compact'], [data-open]) {
   max-width: 64rem;
   border-color: var(--line);
-  background: #100d27;
+  background: var(--panel);
   box-shadow: 0 8px 32px -8px rgb(0 0 0 / 0.6);
 }
 .nav-pill:is([data-mode='float'], [data-mode='compact'], [data-open]) .nav-row {
@@ -873,7 +911,7 @@ body {
 }
 @media (min-width: 768px) {
   .nav-pill:is([data-mode='float'], [data-mode='compact']) {
-    background: rgb(16 13 39 / 0.6);
+    background: var(--panel-glass);
     backdrop-filter: blur(24px);
   }
 }

@@ -57,9 +57,19 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Reading the request makes every page render per request, so Next can stamp the
   // CSP nonce from proxy.ts onto its scripts. Static pages would be blocked by the CSP.
-  await headers()
+  const nonce = (await headers()).get('x-nonce') ?? undefined
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${mono.variable}`}>
+    // The theme script below may set data-theme before React hydrates.
+    <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Apply a saved day theme before the first paint (see theme-toggle.tsx). */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('theme')==='light'){document.documentElement.dataset.theme='light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f6f5fc')}}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="bg-bg text-fg antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-bg">
           Skip to content

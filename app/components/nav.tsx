@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { site } from '@/lib/site'
-import { PaletteButton } from './command-palette'
+import { ThemeToggle } from './theme-toggle'
 import { features } from '@/lib/features'
 import { HyperText } from '@/components/ui/hyper-text'
 import { ShineBorder } from '@/components/ui/shine-border'
@@ -23,7 +23,7 @@ export function Nav() {
       </Link>
       <nav aria-label="Primary" className="ml-auto flex items-center gap-1 text-sm">
         <NavLinks />
-        {features.commandPalette && <PaletteButton />}
+        <ThemeToggle />
         <a
           href={site.github.href}
           target="_blank"
