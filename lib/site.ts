@@ -12,6 +12,8 @@ export const site = {
   // Hero photo with its studio backdrop recoloured to the site's indigo-navy, so it blends
   // into the page. Made from hamze-portrait.jpg, using hamze-portrait-day.webp as the mask.
   portrait: '/hamze-portrait-indigo.jpg',
+  /** The same photo on its original white backdrop, for day mode. */
+  portraitDay: '/hamze-portrait-day.webp',
   headline: ['I break things', 'so I can build them better.'],
   intro:
     'Cyber Security Instructor at Telesom and web developer. I teach security, build security tools like SecureScan, and ship web apps hardened like production systems.',
