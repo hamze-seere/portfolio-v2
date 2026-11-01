@@ -6,7 +6,7 @@ track: both
 role: Solo — design, engineering, threat model
 client: Open source (MIT)
 stack: Next.js 16, React 19, TypeScript, Tailwind 4, Node tls/dns
-outcome: 9 check categories · zero-dependency scanner engine · 87 tests · CI-gated GitHub Action
+outcome: 9 check categories · zero-dependency scanner engine · 102 tests · CI-gated GitHub Action
 repo: https://github.com/hamze-seere/securescan
 live: https://securescan-hamze.vercel.app
 shot: /shots/securescan.png
@@ -40,7 +40,7 @@ A server that fetches any URL a stranger types in is itself an attack surface. I
 
 - The scanner engine has **zero runtime dependencies** — it is written directly on Node's `http`, `https`, `tls` and `dns` modules.
 - One module per check category, a separate scoring module, and an injectable DNS client so checks are testable offline.
-- **87 unit and integration tests**, including an end-to-end scan of a deliberately insecure server and an SSRF test suite.
+- **102 unit and integration tests**, including an end-to-end scan of a deliberately insecure server and an SSRF test suite.
 - CI runs tests, the production build and `npm audit` on every push; the project scans its own live deployment after every release and weekly.
 
 ## Result
