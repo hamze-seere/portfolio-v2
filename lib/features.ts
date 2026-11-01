@@ -27,7 +27,7 @@ export const features = {
   typingTerminal: true,
   /** Hero background is a field of slowly shifting glyphs instead of a plain grid. */
   glyphMatrix: true,
-  /** A thin red → blue bar under the top edge fills as you scroll. */
+  /** A thin violet → blue line along the floating nav's bottom edge fills as you scroll. */
   scrollProgress: true,
   /** Light beams run between the four steps in "How I work". */
   methodBeams: true,

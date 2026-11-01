@@ -9,12 +9,13 @@ import { motion, MotionConfig } from 'motion/react'
   Primary links with a 21st.dev "Tubelight" indicator: a soft pill with a red → blue lamp
   on top glides (spring, shared layoutId) to whichever link you hover, and rests on the
   page or home-page section you are in. Reduced motion: it jumps instead of gliding.
+  Tablet width and up only; phones get these links in the nav's Menu panel.
 */
-const links = [
-  { href: '/#services', label: 'Services', section: 'services', always: false },
-  { href: '/work', label: 'Work', always: true },
-  { href: '/#experience', label: 'Timeline', section: 'experience', always: false },
-  { href: '/blog', label: 'Writing', always: true },
+export const links = [
+  { href: '/#services', label: 'Services', section: 'services' },
+  { href: '/work', label: 'Work' },
+  { href: '/#experience', label: 'Timeline', section: 'experience' },
+  { href: '/blog', label: 'Writing' },
 ]
 
 export function NavLinks() {
@@ -55,7 +56,7 @@ export function NavLinks() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="flex items-center gap-0.5" onPointerLeave={() => setHovered(null)}>
+      <div className="hidden items-center gap-0.5 md:flex" onPointerLeave={() => setHovered(null)}>
         {links.map((l) => (
           <Link
             key={l.href}
@@ -64,7 +65,7 @@ export function NavLinks() {
             onPointerEnter={() => setHovered(l.href)}
             onFocus={() => setHovered(l.href)}
             onBlur={() => setHovered(null)}
-            className={`${l.always ? 'block' : 'hidden md:block'} relative isolate rounded-full px-2 py-1.5 transition-colors sm:px-3 ${l.href === lit ? 'text-fg' : 'text-muted'}`}
+            className={`relative isolate rounded-full px-3 py-1.5 transition-colors ${l.href === lit ? 'text-fg' : 'text-muted'}`}
           >
             {l.href === lit && (
               <motion.span layoutId="tubelight" className="absolute inset-0 -z-10 rounded-full bg-surface-2" transition={{ type: 'spring', stiffness: 380, damping: 32 }} aria-hidden="true">

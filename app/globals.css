@@ -837,3 +837,144 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .nav-mono, .nav-mono::after { transition: none; }
 }
+
+/* Floating nav (nav-shell.tsx). data-mode: top = plain bar, float = glass capsule,
+   compact = smaller capsule while scrolling down. data-open = phone menu panel showing;
+   the capsule's rounded corners stretch with it, so it looks like the pill flows open.
+   Phones get a solid fill, since a live blur is costly to redraw there while scrolling. */
+.nav-pill {
+  position: relative;
+  max-width: calc(72rem - 1.5rem);
+  margin-inline: auto;
+  border: 1px solid transparent;
+  border-radius: 28px;
+}
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 4rem;
+  padding-inline: 0.5rem;
+}
+.nav-pill:is([data-mode='float'], [data-mode='compact'], [data-open]) {
+  max-width: 64rem;
+  border-color: var(--line);
+  background: #100d27;
+  box-shadow: 0 8px 32px -8px rgb(0 0 0 / 0.6);
+}
+.nav-pill:is([data-mode='float'], [data-mode='compact'], [data-open]) .nav-row {
+  height: 3.5rem;
+}
+.nav-pill[data-mode='compact']:not([data-open]) {
+  max-width: 52rem;
+}
+.nav-pill[data-mode='compact']:not([data-open]) .nav-row {
+  height: 3rem;
+}
+@media (min-width: 768px) {
+  .nav-pill:is([data-mode='float'], [data-mode='compact']) {
+    background: rgb(16 13 39 / 0.6);
+    backdrop-filter: blur(24px);
+  }
+}
+
+.nav-progress {
+  position: absolute;
+  inset-inline: 1.75rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--sec), var(--web));
+  transform-origin: left;
+  transform: scaleX(var(--progress, 0));
+}
+.nav-pill:is([data-mode='top'], [data-open]) .nav-progress {
+  opacity: 0;
+}
+
+.nav-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.25rem;
+  border-radius: 9999px;
+  background: var(--surface-2);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+/* Two lines that cross into an X while the menu is open. */
+.nav-burger {
+  position: relative;
+  width: 14px;
+  height: 8px;
+}
+.nav-burger::before,
+.nav-burger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.nav-burger::before { top: 0; }
+.nav-burger::after { bottom: 0; }
+.nav-toggle[aria-expanded='true'] .nav-burger::before { top: 3.25px; rotate: 45deg; }
+.nav-toggle[aria-expanded='true'] .nav-burger::after { bottom: 3.25px; rotate: -45deg; }
+
+.nav-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+.nav-panel > div {
+  min-height: 0;
+  overflow: hidden;
+}
+.nav-pill[data-open] .nav-panel {
+  grid-template-rows: 1fr;
+}
+/* Tablet width and up shows the links inline, so no Menu. */
+@media (min-width: 768px) {
+  .nav-toggle,
+  .nav-panel {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-pill {
+    transition:
+      max-width 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background-color 0.3s,
+      border-color 0.3s,
+      box-shadow 0.3s;
+  }
+  .nav-row {
+    transition: height 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nav-progress {
+    transition: opacity 0.3s;
+  }
+  .nav-burger::before,
+  .nav-burger::after {
+    transition: top 0.25s, bottom 0.25s, rotate 0.25s;
+  }
+  .nav-panel {
+    transition: grid-template-rows 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* Links rise in one after another as the panel opens. */
+  .nav-panel li {
+    opacity: 0;
+    translate: 0 12px;
+    transition: opacity 0.2s, translate 0.2s;
+  }
+  .nav-pill[data-open] .nav-panel li {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.35s calc(80ms + var(--i) * 45ms),
+      translate 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) calc(80ms + var(--i) * 45ms);
+  }
+}

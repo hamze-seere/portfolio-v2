@@ -6,7 +6,6 @@ import { Nav } from './components/nav'
 import { Footer } from './components/footer'
 import { CommandPalette, type PaletteItem } from './components/command-palette'
 import { Effects } from './components/effects'
-import { ScrollProgress } from '@/components/ui/scroll-progress'
 import { getPosts, getWork } from '@/lib/content'
 import { features } from '@/lib/features'
 import { baseUrl, site } from '@/lib/site'
@@ -65,7 +64,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-bg">
           Skip to content
         </a>
-        {features.scrollProgress && <ScrollProgress className="h-0.5 from-sec via-[color-mix(in_srgb,var(--sec)_40%,var(--web))] to-web" />}
         <Nav />
         <main id="main">{features.pageTransitions ? <ViewTransition>{children}</ViewTransition> : children}</main>
         <Footer />
