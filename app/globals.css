@@ -103,8 +103,19 @@
 :root[data-theme='light'] .portrait-night {
   display: none;
 }
+/* Day: fading the black suit over a light page leaves a grey haze, so the day photo isn't
+   masked. Multiply turns its white backdrop into the page colour (glows included) and
+   leaves the suit untouched, so the photo has no visible edge. */
 :root[data-theme='light'] .portrait-day {
   display: block;
+  mask-image: none;
+  mix-blend-mode: multiply;
+}
+/* With no fade to overlap, the phone text starts just below the photo instead of on the suit. */
+@media (max-width: 1023px) {
+  :root[data-theme='light'] .hero-copy {
+    margin-top: 2rem;
+  }
 }
 
 /* Faded out at the top so the name, photo and headline stay clean. */

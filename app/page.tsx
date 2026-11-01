@@ -47,7 +47,7 @@ export default async function Home() {
           </div>
         )}
         {features.glyphMatrix ? <HeroGlyphs /> : <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />}
-        <div className="relative z-10 mx-auto -mt-20 flex w-full max-w-6xl items-center px-5 pb-12 lg:mt-0 lg:min-h-[min(calc(100svh-4rem),52rem)] lg:py-16">
+        <div className="hero-copy relative z-10 mx-auto -mt-20 flex w-full max-w-6xl items-center px-5 pb-12 lg:mt-0 lg:min-h-[min(calc(100svh-4rem),52rem)] lg:py-16">
           <div className="lg:w-[54%]">
             {site.available && (
               <p className="rise inline-flex h-8 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted">
