@@ -39,7 +39,7 @@ export function GlyphMatrix({
 }: GlyphMatrixProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   // Current glyph color as RGBA (a in 0-1). Kept in a ref so a color change
-  // (e.g. theme toggle) recolors the next frame without restarting.
+  // recolors the next frame without restarting.
   const rgbaRef = useRef({ r: 107, g: 114, b: 128, a: 1 })
   const redrawRef = useRef<() => void>(() => {})
 

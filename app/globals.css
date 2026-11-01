@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 
 /* ───────────────────────────────────────────────────────────
-   Break it / Build it. Dark-first, follows the OS light/dark
-   setting. Two semantic accents, never decorative:
+   Break it / Build it. One dark palette (no theme switch).
+   Two semantic accents, never decorative:
    --sec (orange-red) = security work · --web (blue) = web work.
    ─────────────────────────────────────────────────────────── */
 
@@ -87,10 +87,6 @@
   /* Phones: full width, fading out at the bottom where the text starts. */
   mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
 }
-/* Day: the black suit would fade to grey over the pale page, so it ends crisply instead. */
-:root[data-theme='light'] .hero-portrait {
-  mask-image: none;
-}
 /* Desktop: flush to the screen's right edge, so only the left side and bottom fade into the page. */
 @media (min-width: 1024px) {
   .hero-portrait {
@@ -99,20 +95,12 @@
       linear-gradient(to top, transparent, #000 18%);
     mask-composite: intersect;
   }
-  /* Day: the white backdrop needs only a short edge, and the black suit would smear grey
-     if it faded into the pale page, so the bottom stays solid on the hero's border. */
-  :root[data-theme='light'] .hero-portrait {
-    mask-image: linear-gradient(to right, transparent, #000 12%);
-  }
 }
 
 /* Faded out at the top so the name, photo and headline stay clean. */
 .hero-glyphs {
   opacity: 0.4;
   mask-image: linear-gradient(to bottom, transparent, #000 55%);
-}
-:root[data-theme='light'] .hero-glyphs {
-  opacity: 0.25;
 }
 
 /* Reduced motion: the marquee stops scrolling, so show one copy, wrapped. */
@@ -131,33 +119,19 @@
   }
 }
 
+/* Warm graphite: it matches the grey studio backdrop of the hero photo, so the photo
+   blends into the page instead of sitting on it as a panel. */
 :root {
-  --bg: #0a0c0f;
-  --surface: #11151a;
-  --surface-2: #171c23;
-  --line: #232a33;
-  --fg: #e8ecf1;
-  --muted: #8e98a6;
-  --sec: #ff5a36;
-  --web: #4f8cff;
-  --ok: #3dd68c;
+  --bg: #121110;
+  --surface: #1a1917;
+  --surface-2: #22201e;
+  --line: #2e2b28;
+  --fg: #efece7;
+  --muted: #a39e96;
+  --sec: #ff7847;
+  --web: #7d95ff;
+  --ok: #4ade80;
   color-scheme: dark;
-}
-
-/* Night is the default. Day is opt-in via the toggle (a `theme` cookie the
-   server renders as data-theme, so there's no inline script and no flash).
-   Day uses soft greys rather than pure white to keep glare down. */
-:root[data-theme='light'] {
-  --bg: #e9ecf0;
-  --surface: #f3f5f7;
-  --surface-2: #e1e5ea;
-  --line: #d3d8df;
-  --fg: #12161c;
-  --muted: #545e6b;
-  --sec: #cc3517;
-  --web: #2459d6;
-  --ok: #10804e;
-  color-scheme: light;
 }
 
 html {
@@ -366,9 +340,6 @@ body {
   top: 5%;
   --c: var(--web);
 }
-:root[data-theme='light'] .hero-aura > span {
-  opacity: 0.12;
-}
 @media (prefers-reduced-motion: no-preference) {
   .hero-aura-sec {
     animation: aura-a 22s ease-in-out infinite alternate;
@@ -467,10 +438,6 @@ body {
 .bento-card[data-featured]::after {
   opacity: 1;
 }
-/* Day: dark dots read as grain on a light card, so keep them fainter and further apart. */
-:root[data-theme='light'] .bento-card::after {
-  background: radial-gradient(circle, color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px) 0 0 / 7px 7px;
-}
 
 /* Glowing border (after Aceternity's GlowingEffect): a red → blue light on the card's
    edge. JS sets --start (angle to the cursor) and --active; CSS eases the movement. */
@@ -514,18 +481,6 @@ body {
   mask:
     linear-gradient(#000 0 0) content-box exclude,
     linear-gradient(#000 0 0);
-}
-/* Day: a thin coloured line disappears on a light page, so thicken the ring and give it
-   a soft halo. The element grows by 10px so the arc mask doesn't cut the halo off. */
-:root[data-theme='light'] .glow-border {
-  inset: -10px;
-  border-radius: 26px;
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--sec) 50%, var(--web)));
-}
-:root[data-theme='light'] .glow-border::after {
-  inset: 9px;
-  border-radius: 17px;
-  padding: 3px;
 }
 
 /* Writing list (after Hyperiux's Interactive List Preview): a bar slides to the hovered
@@ -716,19 +671,6 @@ body {
 ::view-transition-group(.morph) {
   animation-duration: 0.4s;
 }
-/* Theme switch (Magic UI theme toggler): no cross-fade, the new theme is
-   revealed by a clip-path animated from the toggle button. */
-:root[data-magicui-theme-vt='active']::view-transition-old(root),
-:root[data-magicui-theme-vt='active']::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-:root[data-magicui-theme-vt='active']::view-transition-new(root) {
-  clip-path: var(--magicui-theme-vt-clip-from);
-}
-:root[data-magicui-theme-vt='active']::view-transition-group(root) {
-  animation-duration: var(--magicui-theme-toggle-vt-duration);
-}
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
@@ -823,12 +765,12 @@ body {
 
 /* sugar-high syntax colours */
 :root {
-  --sh-class: #7aa2ff;
+  --sh-class: #8ea3ff;
   --sh-identifier: var(--fg);
   --sh-sign: var(--muted);
-  --sh-string: #3dd68c;
-  --sh-keyword: #ff7a5c;
-  --sh-comment: #6b7480;
+  --sh-string: #4ade80;
+  --sh-keyword: #ff8a5c;
+  --sh-comment: #7a756e;
   --sh-jsxliterals: #b18cff;
   --sh-property: #ffb454;
   --sh-entity: #ffb454;

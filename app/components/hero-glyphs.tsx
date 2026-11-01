@@ -4,16 +4,12 @@ import { useEffect, useState } from 'react'
 import { GlyphMatrix } from '@/components/ui/glyph-matrix'
 
 /* Hero background: Magic UI's Glyph Matrix in the site's --muted colour. The
-   canvas can't read CSS variables, so resolve it here and again on theme flips. */
+   canvas can't read CSS variables, so resolve it once on mount. */
 export function HeroGlyphs() {
   const [color, setColor] = useState('')
 
   useEffect(() => {
-    const read = () => setColor(getComputedStyle(document.documentElement).getPropertyValue('--muted').trim())
-    read()
-    const mo = new MutationObserver(read)
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => mo.disconnect()
+    setColor(getComputedStyle(document.documentElement).getPropertyValue('--muted').trim())
   }, [])
 
   return (

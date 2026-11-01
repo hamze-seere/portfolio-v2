@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { site } from '@/lib/site'
-import { ThemeToggle, type Theme } from './theme-toggle'
 import { PaletteButton } from './command-palette'
 import { features } from '@/lib/features'
 import { HyperText } from '@/components/ui/hyper-text'
 import { ShineBorder } from '@/components/ui/shine-border'
 import { NavLinks } from './nav-links'
 
-export function Nav({ theme }: { theme: Theme }) {
+export function Nav() {
   // Frosted glass from tablet width up; phones get a near-solid bar, since a live blur
   // under a sticky header is the costliest thing to redraw while scrolling on a phone.
   return (
@@ -27,7 +26,6 @@ export function Nav({ theme }: { theme: Theme }) {
         <nav aria-label="Primary" className="flex items-center gap-1 text-sm">
           <NavLinks />
           {features.commandPalette && <PaletteButton />}
-          <ThemeToggle initial={theme} />
           <a
             href={site.github.href}
             target="_blank"
@@ -40,7 +38,7 @@ export function Nav({ theme }: { theme: Theme }) {
             </svg>
           </a>
           <Link href="/#contact" className="btn-shine relative ml-1 overflow-hidden rounded-md bg-fg px-3.5 py-2 font-medium text-bg transition-opacity hover:opacity-90">
-            <ShineBorder borderWidth={1.5} duration={10} shineColor={['#f0533f', '#5b8def']} />
+            <ShineBorder borderWidth={1.5} duration={10} shineColor={['#ff7847', '#7d95ff']} />
             Hire me
           </Link>
         </nav>

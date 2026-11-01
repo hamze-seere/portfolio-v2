@@ -9,16 +9,16 @@ export function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col w-full h-full justify-between p-20" style={{ background: '#0a0c0f', color: '#e8ecf1' }}>
-        <div tw="flex items-center text-3xl" style={{ color: '#8e98a6' }}>
-          <span style={{ color: '#ff5a36' }}>■</span>
-          <span tw="ml-2" style={{ color: '#4f8cff' }}>■</span>
+      <div tw="flex flex-col w-full h-full justify-between p-20" style={{ background: '#121110', color: '#efece7' }}>
+        <div tw="flex items-center text-3xl" style={{ color: '#a39e96' }}>
+          <span style={{ color: '#ff7847' }}>■</span>
+          <span tw="ml-2" style={{ color: '#7d95ff' }}>■</span>
           <span tw="ml-5">{kicker}</span>
         </div>
         <div tw="flex text-7xl font-bold leading-tight" style={{ letterSpacing: '-0.03em' }}>
           {title}
         </div>
-        <div tw="flex justify-between text-3xl" style={{ color: '#8e98a6' }}>
+        <div tw="flex justify-between text-3xl" style={{ color: '#a39e96' }}>
           <span>{site.name}</span>
           <span>Security · Web</span>
         </div>

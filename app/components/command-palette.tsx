@@ -94,11 +94,6 @@ export function CommandPalette({ items }: { items: PaletteItem[] }) {
       setTimeout(close, 700)
       return
     }
-    if (it.id === 'action:theme') {
-      window.dispatchEvent(new Event('theme:toggle'))
-      close()
-      return
-    }
     close()
     if (it.external && it.href) window.open(it.href, '_blank', 'noopener,noreferrer')
     else if (it.href) router.push(it.href)

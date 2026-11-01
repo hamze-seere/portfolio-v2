@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
 import { BorderBeam } from '@/components/ui/border-beam'
@@ -34,7 +33,6 @@ function SectionHead({ id, kicker, title, children }: { id: string; kicker: stri
 }
 
 export default async function Home() {
-  const theme = (await cookies()).get('theme')?.value === 'light' ? 'light' : 'dark'
   const work = getWork()
   const posts = getPosts().slice(0, 3)
 
@@ -112,7 +110,7 @@ export default async function Home() {
           className="rise relative order-first h-[min(58svh,520px)] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[46%]"
           style={{ '--i': 2 } as React.CSSProperties}
         >
-          <HeroPortrait initial={theme} />
+          <HeroPortrait />
         </div>
       </section>
 
@@ -320,7 +318,7 @@ export default async function Home() {
               </div>
             </dl>
             <div className="relative mt-10 rounded-2xl border border-line bg-surface p-5">
-              <ShineBorder shineColor={['#f0533f', '#5b8def']} />
+              <ShineBorder shineColor={['#ff7847', '#7d95ff']} />
               <p className="flex items-center gap-2 text-sm font-medium">
                 <span className="h-2 w-2 rounded-full bg-ok" aria-hidden="true" />
                 Usually replies within 2 days

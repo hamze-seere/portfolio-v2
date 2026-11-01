@@ -12,7 +12,6 @@ export const site = {
   // public/hamze-portrait.jpg, shown in the hero.
   portrait: '/hamze-portrait.jpg',
   // Same portrait on a white backdrop, shown in day mode.
-  portraitDay: '/hamze-portrait-day.webp',
   headline: ['I break things', 'so I can build them better.'],
   intro:
     'Cyber Security Instructor at Telesom and web developer. I teach security, build security tools like SecureScan, and ship web apps hardened like production systems.',

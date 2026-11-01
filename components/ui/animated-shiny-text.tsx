@@ -1,6 +1,6 @@
 // Magic UI — Animated Shiny Text (magicui.design/r/animated-shiny-text.json).
 // Adapted: neutral/dark: colours swapped for the site's --muted / --fg tokens,
-// which already follow the day/night toggle.
+// which follow the palette tokens.
 import { type ComponentPropsWithoutRef, type CSSProperties, type FC } from 'react'
 
 import { cn } from '@/lib/utils'
