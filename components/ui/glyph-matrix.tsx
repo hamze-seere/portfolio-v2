@@ -2,7 +2,7 @@
 
 // Magic UI — Glyph Matrix (magicui.design/r/glyph-matrix.json).
 // Adapted: for reduced motion it draws one still frame and never ticks; ticks
-// repaint only changed cells and pause while off-screen (see tick below).
+// repaint only changed cells and pause while off-screen or scrolling (see tick below).
 import { useEffect, useRef } from 'react'
 
 import { cn } from '@/lib/utils'
@@ -73,6 +73,8 @@ export function GlyphMatrix({
     let alphas: number[] = []
     let raf = 0
     let last = 0
+    let lastScroll = 0
+    const onScroll = () => (lastScroll = performance.now())
     let stopped = false
 
     const resize = () => {
@@ -116,7 +118,8 @@ export function GlyphMatrix({
     const tick = (t: number) => {
       if (stopped) return
 
-      if (t - last >= interval) {
+      // Hold still while the page scrolls: repainting the canvas then cost scroll frames.
+      if (t - last >= interval && t - lastScroll > 200) {
         last = t
 
         const total = cols * rows
@@ -158,8 +161,10 @@ export function GlyphMatrix({
     })
     io.observe(canvas)
     document.addEventListener('visibilitychange', sync)
+    addEventListener('scroll', onScroll, { passive: true })
 
     return () => {
+      removeEventListener('scroll', onScroll)
       stopped = true
       cancelAnimationFrame(raf)
       ro.disconnect()

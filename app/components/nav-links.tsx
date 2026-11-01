@@ -59,6 +59,7 @@ export function NavLinks() {
       <div className="hidden items-center gap-0.5 md:flex" onPointerLeave={() => setHovered(null)}>
         {links.map((l) => (
           <Link
+            prefetch
             key={l.href}
             href={l.href}
             aria-current={l.href === active ? (l.section ? 'location' : 'page') : undefined}

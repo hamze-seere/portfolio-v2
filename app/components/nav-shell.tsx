@@ -92,7 +92,7 @@ export function NavShell({ children, progress }: { children: React.ReactNode; pr
             <ul className="px-3 pb-4" onClick={(e) => (e.target as Element).closest('a') && setOpen(false)}>
               {[...links, { href: '/#contact', label: 'Contact' }].map((l, i) => (
                 <li key={l.href} style={{ '--i': i } as React.CSSProperties}>
-                  <Link href={l.href} className="flex items-baseline justify-between border-b border-line py-3.5 text-2xl font-semibold tracking-tight">
+                  <Link prefetch href={l.href} className="flex items-baseline justify-between border-b border-line py-3.5 text-2xl font-semibold tracking-tight">
                     {l.label}
                     <span className="font-mono text-xs font-normal text-muted">0{i + 1}</span>
                   </Link>

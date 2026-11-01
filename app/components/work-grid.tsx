@@ -94,6 +94,7 @@ export function WorkGrid({ items }: { items: Item[] }) {
             <li key={slug} className={`card-lift relative min-w-0 rounded-2xl ${mdSpan} ${LG_SPAN[spans[i]]}`}>
               {features.glowCards && <span data-glow className="glow-border" aria-hidden="true" />}
               <Link
+                prefetch
                 href={`/work/${slug}`}
                 data-featured={featured || undefined}
                 className="bento-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-muted/50 md:p-8"

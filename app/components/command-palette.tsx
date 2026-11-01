@@ -117,7 +117,7 @@ export function CommandPalette({ items }: { items: PaletteItem[] }) {
         <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[11px] text-muted">Esc</kbd>
       </div>
 
-      <ul id="palette-results" role="listbox" className="max-h-[50vh] overflow-y-auto p-2">
+      <ul id="palette-results" role="listbox" data-lenis-prevent className="max-h-[50vh] overflow-y-auto p-2">
         {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-muted">No results for “{query}”</li>}
         {results.map((it, i) => {
           const header = it.group !== lastGroup ? it.group : null

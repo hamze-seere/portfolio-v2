@@ -6,6 +6,7 @@ import { Nav } from './components/nav'
 import { Footer } from './components/footer'
 import { CommandPalette, type PaletteItem } from './components/command-palette'
 import { Effects } from './components/effects'
+import { SmoothScroll } from './components/smooth-scroll'
 import { getPosts, getWork } from '@/lib/content'
 import { features } from '@/lib/features'
 import { baseUrl, site } from '@/lib/site'
@@ -77,6 +78,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Nav />
         <main id="main">{features.pageTransitions ? <ViewTransition>{children}</ViewTransition> : children}</main>
         <Footer />
+        <SmoothScroll />
         <Effects reveal={features.scrollReveal} spotlight={features.spotlightCards} />
         {features.commandPalette && <CommandPalette items={paletteItems()} />}
       </body>

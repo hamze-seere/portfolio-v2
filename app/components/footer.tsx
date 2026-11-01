@@ -19,7 +19,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-12 px-5 pb-10 pt-16 text-sm md:grid-cols-[1.4fr_1fr_1.2fr]">
         {/* Who and where, with the same monogram as the nav. */}
         <div>
-          <Link href="/" className="inline-flex items-center gap-2.5 font-semibold tracking-tight" aria-label={`${site.name} — home`}>
+          <Link prefetch href="/" className="inline-flex items-center gap-2.5 font-semibold tracking-tight" aria-label={`${site.name} — home`}>
             <span className="flex h-8 w-8 items-center justify-center rounded-md border border-line bg-surface font-mono text-[13px] font-semibold" aria-hidden="true">
               <span className="text-sec">{site.initials[0]}</span>
               <span className="text-web">{site.initials[1]}</span>
@@ -43,7 +43,7 @@ export function Footer() {
           <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-1">
             {explore.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className={linkClass}>
+                <Link prefetch href={l.href} className={linkClass}>
                   {l.label}
                 </Link>
               </li>

@@ -69,6 +69,7 @@ export function WritingList({ items }: { items: WritingItem[] }) {
       {items.map((p, i) => (
         <li key={p.slug} data-active={active === i || undefined} className="writing-row relative z-10">
           <Link
+            prefetch
             href={`/blog/${p.slug}`}
             onMouseEnter={(e) => activate(i, e.currentTarget.parentElement!)}
             onFocus={(e) => activate(i, e.currentTarget.parentElement!)}

@@ -32,7 +32,7 @@ export default function BlogIndex() {
         {posts.map((p, i) => (
           <li key={p.slug}>
             <BlurFade delay={0.28 + i * 0.1} offset={12}>
-            <Link href={`/blog/${p.slug}`} className="group block py-8">
+            <Link prefetch href={`/blog/${p.slug}`} className="group block py-8">
               <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-muted">
                 <time dateTime={p.metadata.publishedAt}>{formatDate(p.metadata.publishedAt)}</time>
                 <span>·</span>

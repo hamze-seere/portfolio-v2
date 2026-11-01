@@ -48,7 +48,7 @@ export default async function Post({ params }: Props) {
           author: { '@type': 'Person', name: site.name },
         }}
       />
-      <Link href="/blog" className="text-sm text-muted hover:text-fg">
+      <Link prefetch href="/blog" className="text-sm text-muted hover:text-fg">
         ← All writing
       </Link>
       <header className="mt-8 border-b border-line pb-10">
@@ -67,7 +67,7 @@ export default async function Post({ params }: Props) {
       <aside className="mt-16 rounded-2xl border border-line bg-surface p-7">
         <p className="font-semibold">Need this applied to your product?</p>
         <p className="mt-1 text-muted">I run security reviews and build hardened web apps.</p>
-        <Link href="/#contact" className="mt-4 inline-block rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg hover:opacity-85">
+        <Link prefetch href="/#contact" className="mt-4 inline-block rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg hover:opacity-85">
           Get in touch
         </Link>
       </aside>

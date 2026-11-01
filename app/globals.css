@@ -219,6 +219,41 @@ html {
     scroll-behavior: auto;
   }
 }
+/* Smooth wheel scrolling (smooth-scroll.tsx): Lenis does the easing, so the browser's own
+   smooth scroll would fight it. These are the rules from lenis/dist/lenis.css. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis {
+  scroll-behavior: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Taps: no grey flash on phones, and buttons give a little as they're pressed. Unlayered, so
+   this replaces the buttons' transition utilities; it covers everything those animate. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, a.rounded-lg, a.rounded-full) {
+    transition-property: color, background-color, border-color, outline-color, opacity, box-shadow, translate, scale;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  :where(button:not(:disabled), a.rounded-lg, a.rounded-full):active {
+    scale: 0.96;
+    transition-duration: 0.08s;
+  }
+}
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

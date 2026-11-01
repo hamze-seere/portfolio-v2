@@ -46,7 +46,7 @@ export default async function CaseStudy({ params }: Props) {
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:py-24">
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'CreativeWork', name: m.title, description: m.summary, dateCreated: m.year, author: { '@type': 'Person', name: site.name }, url: `${baseUrl}/work/${slug}` }} />
-      <Link href="/work" className="text-sm text-muted hover:text-fg">
+      <Link prefetch href="/work" className="text-sm text-muted hover:text-fg">
         ← All work
       </Link>
       <header
@@ -121,7 +121,7 @@ export default async function CaseStudy({ params }: Props) {
         </div>
       </div>
       <nav aria-label="Next case study" className="mt-20 border-t border-line pt-10">
-        <Link href={`/work/${next.slug}`} className="group block">
+        <Link prefetch href={`/work/${next.slug}`} className="group block">
           <span className="label">Next case study</span>
           <span className="mt-2 block text-3xl font-semibold tracking-tight group-hover:underline group-hover:underline-offset-4">{next.metadata.title} →</span>
         </Link>

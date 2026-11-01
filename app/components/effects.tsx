@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { scrollToElement } from './smooth-scroll'
 
 /*
   Page-wide progressive enhancements, driven by data attributes in the markup:
@@ -88,8 +89,7 @@ export function Effects({ reveal, spotlight }: { reveal: boolean; spotlight: boo
         void section.offsetHeight
         section.style.removeProperty('transition')
       }
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+      scrollToElement(target)
       if (!target.matches('a, button, input, textarea, select, [tabindex]')) target.setAttribute('tabindex', '-1')
       target.focus({ preventScroll: true })
       if (location.hash !== a.hash) history.pushState(null, '', a.hash)

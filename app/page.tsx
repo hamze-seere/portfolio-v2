@@ -76,13 +76,13 @@ export default async function Home() {
               {site.intro}
             </p>
             <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 4 } as React.CSSProperties}>
-              <Link href="/work" className="btn-shine group relative overflow-hidden rounded-lg bg-fg px-5 py-3 font-medium text-bg transition-opacity hover:opacity-90">
+              <Link prefetch href="/work" className="btn-shine group relative overflow-hidden rounded-lg bg-fg px-5 py-3 font-medium text-bg transition-opacity hover:opacity-90">
                 See the work{' '}
                 <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none">
                   →
                 </span>
               </Link>
-              <Link href="/#contact" className="rounded-lg border border-line bg-surface px-5 py-3 font-medium transition-colors hover:border-muted/60">
+              <Link prefetch href="/#contact" className="rounded-lg border border-line bg-surface px-5 py-3 font-medium transition-colors hover:border-muted/60">
                 Book a security review
               </Link>
               <a
@@ -166,7 +166,7 @@ export default async function Home() {
         {/* ── Work ───────────────────────────────────────── */}
         <section data-reveal aria-labelledby="work" className="border-t border-line py-24">
           <SectionHead id="work" kicker="Selected work" title="Case studies">
-            <Link href="/work" className="text-sm text-muted hover:text-fg">
+            <Link prefetch href="/work" className="text-sm text-muted hover:text-fg">
               All work →
             </Link>
           </SectionHead>
@@ -264,7 +264,7 @@ export default async function Home() {
         {/* ── Writing ────────────────────────────────────── */}
         <section data-reveal aria-labelledby="writing" className="border-t border-line py-24">
           <SectionHead id="writing" kicker="Writing" title="Notes from both sides.">
-            <Link href="/blog" className="text-sm text-muted hover:text-fg">
+            <Link prefetch href="/blog" className="text-sm text-muted hover:text-fg">
               All posts →
             </Link>
           </SectionHead>
