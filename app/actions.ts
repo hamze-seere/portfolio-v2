@@ -2,13 +2,45 @@
 
 import { headers } from 'next/headers'
 import { validate, type Fields, type FormState } from '@/lib/contact'
+import { site } from '@/lib/site'
 
 /*
   Contact endpoint. Server actions already enforce same-origin. On top: honeypot,
   minimum fill time, per-IP rate limit, and server-side re-validation.
-  Delivery: POSTs JSON to CONTACT_WEBHOOK_URL (Resend, Slack, n8n…). Without it,
-  development logs to the server console and production refuses honestly.
+  Delivery: with RESEND_API_KEY, emails the message to CONTACT_TO (default: site.email)
+  from CONTACT_FROM (default: Resend's onboarding sender, which only delivers to the
+  Resend account's own address). Or POSTs JSON to CONTACT_WEBHOOK_URL (n8n, Zapier,
+  Make…). With neither, development logs to the console and production refuses honestly.
 */
+
+async function deliver(ref: string, fields: Fields) {
+  const key = process.env.RESEND_API_KEY
+  const hook = process.env.CONTACT_WEBHOOK_URL
+  let res: Response
+  if (key) {
+    res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${key}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>',
+        to: [process.env.CONTACT_TO || site.email],
+        reply_to: fields.email,
+        subject: `${fields.topic || 'New message'} from ${fields.name}`.replace(/[\r\n]+/g, ' ').slice(0, 200),
+        text: `${fields.message}\n\n— ${fields.name} <${fields.email}>\nTopic: ${fields.topic}\nRef: ${ref}`,
+      }),
+      signal: AbortSignal.timeout(8000),
+    })
+  } else if (hook) {
+    res = await fetch(hook, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ref, ...fields, receivedAt: new Date().toISOString() }),
+      signal: AbortSignal.timeout(8000),
+    })
+  } else return false
+  if (!res.ok) throw new Error(String(res.status))
+  return true
+}
 
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_PER_WINDOW = 5
@@ -47,23 +79,15 @@ export async function sendMessage(_prev: FormState, form: FormData): Promise<For
   if (Object.keys(errors).length) return { status: 'error', errors }
 
   const ref = newRef()
-  const hook = process.env.CONTACT_WEBHOOK_URL
-  if (hook) {
-    try {
-      const res = await fetch(hook, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ref, ...fields, receivedAt: new Date().toISOString() }),
-        signal: AbortSignal.timeout(8000),
-      })
-      if (!res.ok) throw new Error(String(res.status))
-    } catch {
-      return { status: 'error', errors: {}, message: 'The message could not be delivered. Please try again, or email me directly.' }
-    }
-  } else if (process.env.NODE_ENV !== 'production') {
+  let delivered: boolean
+  try {
+    delivered = await deliver(ref, fields)
+  } catch {
+    return { status: 'error', errors: {}, message: 'The message could not be delivered. Please try again, or email me directly.' }
+  }
+  if (!delivered) {
+    if (process.env.NODE_ENV === 'production') return { status: 'error', errors: {}, message: 'The contact form is not connected yet. Please email me directly.' }
     console.info('[contact]', { ref, ...fields })
-  } else {
-    return { status: 'error', errors: {}, message: 'The contact form is not connected yet. Please email me directly.' }
   }
 
   return { status: 'sent', ref }

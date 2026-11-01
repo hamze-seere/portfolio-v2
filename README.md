@@ -23,7 +23,7 @@ npm run build && npm start
 Decrypting headline, scroll reveals + stat count-up, spotlight cards, Ctrl/⌘+K command palette and page transitions. Each has an on/off switch in `lib/features.ts` — set it to `false` and rebuild to remove it. All of them turn off for visitors who prefer reduced motion.
 
 ## Contact form
-Set `CONTACT_WEBHOOK_URL` (Resend, Slack, n8n…). Without it, dev logs to the console and production shows "not connected".
+Set `RESEND_API_KEY` to email messages to `CONTACT_TO` (default: `site.email`); `CONTACT_FROM` sets the sender once you verify a domain in Resend. Or set `CONTACT_WEBHOOK_URL` to receive the raw JSON (n8n, Zapier, Make…). Without either, dev logs to the console and production shows "not connected".
 
 ## Security
 Nonce CSP with `strict-dynamic`, HSTS, XCTO, XFO, Referrer, Permissions, COOP, CORP. The hero terminal re-requests the page and prints the headers it actually received. The nonce means pages render per request (no static caching).
