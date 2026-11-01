@@ -26,6 +26,16 @@ SecureScan grades a website's security posture from **A+ to F**. Every finding c
 
 On top of the scanner: shareable 30-day report links, a multi-page PDF export, and a **GitHub Action** that fails a deployment when the grade drops below a minimum.
 
+## Email breach check
+
+A separate tool checks whether an email address appears in known data breaches: the breach name, date and what kinds of data leaked, plus SPF, DMARC, DKIM and MX for the address's domain. It uses XposedOrNot by default, or Have I Been Pwned when an API key is configured.
+
+Looking up someone's email is sensitive, so it is built privacy-first:
+
+- The address is **never stored or logged**, and a test enforces that. Responses show it masked (`te***@example.com`) and are never cached, saved to history or shared.
+- The user confirms the address is theirs, and checks are rate-limited per IP, per address (keyed by an HMAC, not the address) and site-wide per day.
+- Only breach summaries come back, never passwords or records. The provider is called from the server, so the browser still makes no third-party requests.
+
 ## The security problem inside the security tool
 
 A server that fetches any URL a stranger types in is itself an attack surface. I wrote a threat model before writing the scanner, and the design follows from it.
