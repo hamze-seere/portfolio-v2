@@ -3,7 +3,7 @@
 /* ───────────────────────────────────────────────────────────
    Break it / Build it. One dark palette (no theme switch).
    Two semantic accents, never decorative:
-   --sec (orange-red) = security work · --web (blue) = web work.
+   --sec (violet) = security work · --web (blue) = web work.
    ─────────────────────────────────────────────────────────── */
 
 @theme {
@@ -119,19 +119,35 @@
   }
 }
 
-/* Warm graphite: it matches the grey studio backdrop of the hero photo, so the photo
-   blends into the page instead of sitting on it as a panel. */
+/* Deep indigo night: violet (security) and blue (web) glow out of a near-black navy,
+   and cards are translucent so the glow shows through them. */
 :root {
-  --bg: #121110;
-  --surface: #1a1917;
-  --surface-2: #22201e;
-  --line: #2e2b28;
-  --fg: #efece7;
-  --muted: #a39e96;
-  --sec: #ff7847;
-  --web: #7d95ff;
+  --bg: #07061a;
+  --surface: rgb(24 20 52 / 0.55);
+  --surface-2: rgb(38 32 78 / 0.6);
+  --line: rgb(139 132 220 / 0.16);
+  --fg: #f2f1fb;
+  --muted: #9d9abd;
+  --sec: #a78bfa;
+  --web: #60a5fa;
   --ok: #4ade80;
   color-scheme: dark;
+}
+
+/* Two soft glows fixed behind the page: violet top-left, blue right. */
+body {
+  background: transparent;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55vw 55vh at -5% -10%, rgb(124 58 237 / 0.28), transparent 70%),
+    radial-gradient(45vw 60vh at 105% 35%, rgb(37 99 235 / 0.22), transparent 70%),
+    radial-gradient(40vw 40vh at 30% 110%, rgb(109 40 217 / 0.14), transparent 70%);
 }
 
 html {
@@ -361,7 +377,7 @@ body {
 
 /* Gradient headline: red → blue, the site's two disciplines. */
 .headline-gradient {
-  background: linear-gradient(90deg, var(--sec), color-mix(in srgb, var(--sec) 35%, var(--web)) 45%, var(--web));
+  background: linear-gradient(90deg, #c4b5fd, var(--sec) 35%, #818cf8 65%, var(--web));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -591,7 +607,7 @@ body {
   background: linear-gradient(90deg, var(--sec), var(--web));
 }
 .method-num {
-  /* --t runs 0 → 1 across the steps: red at the start, blue at the end */
+  /* --t runs 0 → 1 across the steps: violet at the start, blue at the end */
   color: color-mix(in srgb, var(--web) calc(var(--t) * 100%), var(--sec));
 }
 .method-dot {
@@ -647,6 +663,10 @@ body {
 }
 
 /* Command palette (native <dialog>). */
+/* The palette sits over the page, so unlike the glass cards it gets a solid fill. */
+.palette {
+  background: #100d27;
+}
 .palette::backdrop {
   background: rgb(0 0 0 / 0.55);
   backdrop-filter: blur(3px);
@@ -765,15 +785,15 @@ body {
 
 /* sugar-high syntax colours */
 :root {
-  --sh-class: #8ea3ff;
+  --sh-class: #93c5fd;
   --sh-identifier: var(--fg);
   --sh-sign: var(--muted);
   --sh-string: #4ade80;
-  --sh-keyword: #ff8a5c;
-  --sh-comment: #7a756e;
-  --sh-jsxliterals: #b18cff;
-  --sh-property: #ffb454;
-  --sh-entity: #ffb454;
+  --sh-keyword: #c4b5fd;
+  --sh-comment: #6b6890;
+  --sh-jsxliterals: #f0abfc;
+  --sh-property: #fcd34d;
+  --sh-entity: #fcd34d;
 }
 
 /* Certificates: a seal tinted by track, and a thin top bar like the project cards. */

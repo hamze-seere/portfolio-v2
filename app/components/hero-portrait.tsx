@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { site } from '@/lib/site'
 
-/* Hero photo on its dark studio backdrop. */
+/* Hero photo on its indigo-navy backdrop. */
 export function HeroPortrait() {
   return (
     <Image

@@ -9,16 +9,20 @@ export function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col w-full h-full justify-between p-20" style={{ background: '#121110', color: '#efece7' }}>
-        <div tw="flex items-center text-3xl" style={{ color: '#a39e96' }}>
-          <span style={{ color: '#ff7847' }}>■</span>
-          <span tw="ml-2" style={{ color: '#7d95ff' }}>■</span>
+      <div tw="flex flex-col w-full h-full justify-between p-20" style={{
+          backgroundColor: '#07061a',
+          backgroundImage: 'radial-gradient(circle at 0% 0%, rgba(124, 58, 237, 0.35), transparent 55%), radial-gradient(circle at 100% 70%, rgba(37, 99, 235, 0.28), transparent 55%)',
+          color: '#f2f1fb',
+        }}>
+        <div tw="flex items-center text-3xl" style={{ color: '#9d9abd' }}>
+          <span style={{ color: '#a78bfa' }}>■</span>
+          <span tw="ml-2" style={{ color: '#60a5fa' }}>■</span>
           <span tw="ml-5">{kicker}</span>
         </div>
         <div tw="flex text-7xl font-bold leading-tight" style={{ letterSpacing: '-0.03em' }}>
           {title}
         </div>
-        <div tw="flex justify-between text-3xl" style={{ color: '#a39e96' }}>
+        <div tw="flex justify-between text-3xl" style={{ color: '#9d9abd' }}>
           <span>{site.name}</span>
           <span>Security · Web</span>
         </div>

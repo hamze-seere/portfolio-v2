@@ -9,9 +9,9 @@ export const site = {
   /** What the nav shows next to the monogram. */
   shortName: 'Hamze',
   role: 'Senior Cybersecurity & Web Developer',
-  // public/hamze-portrait.jpg, shown in the hero.
-  portrait: '/hamze-portrait.jpg',
-  // Same portrait on a white backdrop, shown in day mode.
+  // Hero photo with its studio backdrop recoloured to the site's indigo-navy, so it blends
+  // into the page. Made from hamze-portrait.jpg, using hamze-portrait-day.webp as the mask.
+  portrait: '/hamze-portrait-indigo.jpg',
   headline: ['I break things', 'so I can build them better.'],
   intro:
     'Cyber Security Instructor at Telesom and web developer. I teach security, build security tools like SecureScan, and ship web apps hardened like production systems.',

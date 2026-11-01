@@ -4,7 +4,7 @@
 // created on demand, animates for about two seconds, then removes itself.
 // Skipped entirely for visitors who ask for reduced motion.
 
-const COLORS = ['#ff7847', '#f2906b', '#b49be0', '#7d95ff', '#4ade80']
+const COLORS = ['#a78bfa', '#c4b5fd', '#818cf8', '#60a5fa', '#4ade80']
 
 export function fireConfetti(from?: HTMLElement | null) {
   if (typeof window === 'undefined' || matchMedia('(prefers-reduced-motion: reduce)').matches) return

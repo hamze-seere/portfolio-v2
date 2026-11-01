@@ -318,7 +318,7 @@ export default async function Home() {
               </div>
             </dl>
             <div className="relative mt-10 rounded-2xl border border-line bg-surface p-5">
-              <ShineBorder shineColor={['#ff7847', '#7d95ff']} />
+              <ShineBorder shineColor={['#a78bfa', '#60a5fa']} />
               <p className="flex items-center gap-2 text-sm font-medium">
                 <span className="h-2 w-2 rounded-full bg-ok" aria-hidden="true" />
                 Usually replies within 2 days

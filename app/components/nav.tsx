@@ -10,7 +10,7 @@ export function Nav() {
   // Frosted glass from tablet width up; phones get a near-solid bar, since a live blur
   // under a sticky header is the costliest thing to redraw while scrolling on a phone.
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/95 md:bg-bg/80 md:backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-bg md:bg-bg/80 md:backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5">
         <Link href="/" className="group flex items-center gap-2.5 font-semibold tracking-tight" aria-label={`${site.name} — home`}>
           {/* Monogram: first initial in the security accent, second in the web accent. */}
@@ -38,7 +38,7 @@ export function Nav() {
             </svg>
           </a>
           <Link href="/#contact" className="btn-shine relative ml-1 overflow-hidden rounded-md bg-fg px-3.5 py-2 font-medium text-bg transition-opacity hover:opacity-90">
-            <ShineBorder borderWidth={1.5} duration={10} shineColor={['#ff7847', '#7d95ff']} />
+            <ShineBorder borderWidth={1.5} duration={10} shineColor={['#a78bfa', '#60a5fa']} />
             Hire me
           </Link>
         </nav>
