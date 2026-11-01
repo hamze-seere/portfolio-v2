@@ -18,22 +18,32 @@ export function WritingList({ items }: { items: WritingItem[] }) {
   const listRef = useRef<HTMLUListElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
   const fine = useRef(false)
+  const still = useRef(true)
   const target = useRef({ x: 0, y: 0 })
+  const now = useRef({ x: 0, y: 0 })
+  const frame = useRef(0)
 
   useEffect(() => {
     fine.current = matchMedia('(pointer: fine)').matches
-    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!fine.current || still) return
-    // Ease the preview a few pixels towards the pointer (the original's parallax).
-    const now = { x: 0, y: 0 }
-    let frame = requestAnimationFrame(function tick() {
-      now.x += (target.current.x - now.x) * 0.18
-      now.y += (target.current.y - now.y) * 0.18
-      previewRef.current?.style.setProperty('translate', `${now.x.toFixed(2)}px ${now.y.toFixed(2)}px`)
-      frame = requestAnimationFrame(tick)
-    })
-    return () => cancelAnimationFrame(frame)
+    still.current = matchMedia('(prefers-reduced-motion: reduce)').matches
+    return () => cancelAnimationFrame(frame.current)
   }, [])
+
+  // Ease the preview a few pixels towards the pointer (the original's parallax). The loop
+  // runs only while the preview is catching up, so it costs nothing while you scroll.
+  const follow = () => {
+    if (frame.current || !fine.current || still.current) return
+    frame.current = requestAnimationFrame(function tick() {
+      const n = now.current
+      const t = target.current
+      n.x += (t.x - n.x) * 0.18
+      n.y += (t.y - n.y) * 0.18
+      const settled = Math.abs(t.x - n.x) < 0.05 && Math.abs(t.y - n.y) < 0.05
+      if (settled) Object.assign(n, t)
+      previewRef.current?.style.setProperty('translate', `${n.x.toFixed(2)}px ${n.y.toFixed(2)}px`)
+      frame.current = settled ? 0 : requestAnimationFrame(tick)
+    })
+  }
 
   const activate = (i: number, row: HTMLElement) => {
     if (!fine.current || !listRef.current) return
@@ -51,6 +61,7 @@ export function WritingList({ items }: { items: WritingItem[] }) {
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect()
         target.current = { x: ((e.clientX - r.left) / r.width - 0.5) * 20, y: ((e.clientY - r.top) / r.height - 0.5) * 20 }
+        follow()
       }}
       className="writing-list relative -mx-4 divide-y divide-line border-y border-line"
     >

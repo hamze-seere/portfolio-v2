@@ -314,6 +314,10 @@ body {
   transition:
     transform 0.25s ease-out,
     border-color 0.2s;
+}
+/* A GPU layer only while tilting: a permanent one per card made every scroll frame
+   re-layer the whole grid. */
+[data-spotlight][data-spot-on] {
   will-change: transform;
 }
 [data-spotlight]::before {
@@ -334,24 +338,33 @@ body {
   border-color: color-mix(in srgb, var(--muted) 45%, transparent);
 }
 
-/* Hero aura: a red (security) and a blue (web) glow drifting behind the hero. */
+/* Hero aura: a red (security) and a blue (web) glow drifting behind the hero. Drawn as a
+   radial gradient with the falloff of a disc under blur(110px), not a live blur filter,
+   which repainted a huge blurred layer and made scrolling past the hero stutter. */
 .hero-aura > span {
   position: absolute;
   width: min(620px, 80vw);
   aspect-ratio: 1;
-  border-radius: 50%;
-  filter: blur(110px);
+  scale: 1.7;
   opacity: 0.2;
+  background: radial-gradient(
+    closest-side,
+    var(--c) 17%,
+    color-mix(in srgb, var(--c) 85%, transparent) 35%,
+    color-mix(in srgb, var(--c) 50%, transparent) 59%,
+    color-mix(in srgb, var(--c) 15%, transparent) 80%,
+    transparent
+  );
 }
 .hero-aura-sec {
   left: -10%;
   top: -25%;
-  background: var(--sec);
+  --c: var(--sec);
 }
 .hero-aura-web {
   right: -12%;
   top: 5%;
-  background: var(--web);
+  --c: var(--web);
 }
 :root[data-theme='light'] .hero-aura > span {
   opacity: 0.12;

@@ -1,7 +1,8 @@
 'use client'
 
 // Magic UI — Blur Fade (magicui.design/r/blur-fade.json).
-// Adapted: renders a plain div for reduced motion, so content is never held hidden.
+// Adapted: renders a plain div for reduced motion, so content is never held hidden, and
+// defaults to no blur (fade + slide only): animating filter on whole cards made scrolling stutter.
 import { useRef } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion, type MotionProps, type UseInViewOptions, type Variants } from 'motion/react'
 
@@ -35,7 +36,7 @@ export function BlurFade({
   direction = 'down',
   inView = false,
   inViewMargin = '-50px',
-  blur = '6px',
+  blur,
   ...props
 }: BlurFadeProps) {
   const ref = useRef(null)
@@ -46,12 +47,12 @@ export function BlurFade({
     hidden: {
       [direction === 'left' || direction === 'right' ? 'x' : 'y']: direction === 'right' || direction === 'down' ? -offset : offset,
       opacity: 0,
-      filter: `blur(${blur})`,
+      ...(blur ? { filter: `blur(${blur})` } : {}),
     },
     visible: {
       [direction === 'left' || direction === 'right' ? 'x' : 'y']: 0,
       opacity: 1,
-      filter: `blur(0px)`,
+      ...(blur ? { filter: `blur(0px)` } : {}),
     },
   }
   const combinedVariants = variant ?? defaultVariants

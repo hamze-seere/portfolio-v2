@@ -24,7 +24,7 @@ function SectionHead({ id, kicker, title, children }: { id: string; kicker: stri
     <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="label">{kicker}</p>
-        <TextAnimate as="h2" id={id} animation="blurInUp" by="word" once className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
+        <TextAnimate as="h2" id={id} animation="slideUp" by="word" once className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
           {title}
         </TextAnimate>
       </div>
@@ -289,7 +289,7 @@ export default async function Home() {
           </div>
           <div>
             <p className="label">Contact</p>
-            <TextAnimate as="h2" id="contact" animation="blurInUp" by="word" once className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
+            <TextAnimate as="h2" id="contact" animation="slideUp" by="word" once className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
               Let’s secure what you’re building.
             </TextAnimate>
             <p className="mt-5 max-w-md text-lg text-muted">

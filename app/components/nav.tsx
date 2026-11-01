@@ -8,8 +8,10 @@ import { ShineBorder } from '@/components/ui/shine-border'
 import { NavLinks } from './nav-links'
 
 export function Nav({ theme }: { theme: Theme }) {
+  // Frosted glass from tablet width up; phones get a near-solid bar, since a live blur
+  // under a sticky header is the costliest thing to redraw while scrolling on a phone.
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-bg/95 md:bg-bg/80 md:backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5">
         <Link href="/" className="group flex items-center gap-2.5 font-semibold tracking-tight" aria-label={`${site.name} — home`}>
           {/* Monogram: first initial in the security accent, second in the web accent. */}
