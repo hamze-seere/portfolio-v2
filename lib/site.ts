@@ -6,6 +6,8 @@ export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hamse-yo-xs.
 export const site = {
   name: 'Hamze Seere',
   initials: 'HS',
+  /** What the nav shows next to the monogram. */
+  shortName: 'Hamze',
   role: 'Senior Cybersecurity & Web Developer',
   // public/hamze-portrait.jpg, shown in the hero.
   portrait: '/hamze-portrait.jpg',
@@ -41,7 +43,7 @@ export const scanFeed = [
 
 // One-line proof under the hero buttons: [project, what backs it up].
 export const proof = [
-  ['SecureScan', '102 tests · open source'],
+  ['SecureScan', '125 tests · open source'],
   ['EduManage', '230 tests · live for a school'],
   ['Telesom', 'teaching cybersecurity'],
 ] as const
@@ -49,7 +51,7 @@ export const proof = [
 export const stats = [
   { value: '17', label: 'Public repositories' },
   { value: '9', label: 'Check categories in SecureScan' },
-  { value: '102', label: 'Automated tests in SecureScan' },
+  { value: '125', label: 'Automated tests in SecureScan' },
   { value: '14', label: 'Security & networking labs' },
 ]
 
@@ -90,7 +92,7 @@ export const method = [
 export const experience = [
   { period: 'Now', track: 'now', role: 'Cyber Security Instructor', org: 'Telesom', note: 'Teaching cybersecurity.' },
   { period: 'Oct 2026', track: 'both', role: 'Built EduManage for Gateway School', org: 'School management system', note: 'Bilingual school website and portal: attendance, exams, fees and homework, with two-step sign-in and 230 automated tests.' },
-  { period: 'Oct 2026', track: 'both', role: 'Built and shipped SecureScan', org: 'Open-source project', note: 'Website security scanner with a written threat model, 102 tests and a GitHub Action.' },
+  { period: 'Oct 2026', track: 'both', role: 'Built and shipped SecureScan', org: 'Open-source project', note: 'Website security scanner with a written threat model, 125 tests and a GitHub Action.' },
   { period: 'Oct 2026', track: 'security', role: 'GNS3 networking labs', org: 'Self-directed', note: 'OSPF, Spanning Tree, CDP and Telnet labs on emulated Cisco routers and switches.' },
   { period: 'Oct 2026', track: 'both', role: 'Built a hardened portfolio', org: 'Personal project', note: 'Strict nonce CSP, full security headers and zero third-party requests on Next.js 16.' },
   { period: 'Sep 2026', track: 'security', role: 'Cybersecurity coursework', org: 'Somali National University', note: 'Labs in attack surface, incident impact, CIA controls, hardening and networking.' },

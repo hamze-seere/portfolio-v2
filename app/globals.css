@@ -840,3 +840,25 @@ body {
 .cert-card[data-track='both']::after {
   background: linear-gradient(90deg, var(--sec), var(--web));
 }
+
+/* Nav: the Tubelight lamp over the active link, and a sheen across the monogram on hover. */
+.tubelight-lamp {
+  background: linear-gradient(90deg, var(--sec), var(--web));
+  box-shadow:
+    0 0 8px 1px color-mix(in oklab, var(--sec) 55%, transparent),
+    0 6px 14px 2px color-mix(in oklab, var(--web) 35%, transparent);
+}
+.nav-mono::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, color-mix(in oklab, var(--fg) 22%, transparent) 50%, transparent 65%);
+  translate: -110% 0;
+  transition: translate 0.6s ease;
+}
+.group:hover .nav-mono::after {
+  translate: 110% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-mono, .nav-mono::after { transition: none; }
+}
