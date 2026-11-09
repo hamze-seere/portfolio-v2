@@ -160,13 +160,13 @@ export function WorkGrid({ items }: { items: Item[] }) {
                     // The wide tile has room to spare: show each result as its own cell.
                     <ul className="grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
                       {m.outcome.split('·').map((o) => (
-                        <li key={o} className="rounded-lg border border-line bg-surface-2/60 px-3 py-2.5 font-mono text-[12px] leading-snug text-fg">
+                        <li key={o} className="rounded-lg border border-line bg-surface-2/60 px-3 py-2.5 text-[13px] font-medium leading-snug text-fg">
                           {o.trim()}
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="border-t border-line pt-4 font-mono text-[13px] text-fg">{m.outcome}</p>
+                    <p className="border-t border-line pt-4 text-sm font-medium text-fg">{m.outcome}</p>
                   )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     {m.stack.map((s) => (

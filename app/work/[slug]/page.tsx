@@ -65,7 +65,7 @@ export default async function CaseStudy({ params }: Props) {
           )}
         </h1>
         <p className="mt-5 max-w-3xl text-xl leading-relaxed text-muted">{m.summary}</p>
-        <p className="mt-8 inline-block rounded-lg border border-line bg-surface px-4 py-3 font-mono text-sm">
+        <p className="mt-8 inline-block rounded-lg border border-line bg-surface px-4 py-3 text-sm font-medium">
           <span className="text-ok">Result:</span> {m.outcome}
         </p>
         {(m.live || m.repo) && (

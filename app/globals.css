@@ -160,6 +160,7 @@
   --glow-a: rgb(124 58 237 / 0.28);
   --glow-b: rgb(37 99 235 / 0.22);
   --glow-c: rgb(109 40 217 / 0.14);
+  --band: rgb(139 132 220 / 0.05);
   color-scheme: dark;
 }
 
@@ -182,6 +183,7 @@
   --glow-a: rgb(167 139 250 / 0.3);
   --glow-b: rgb(96 165 250 / 0.22);
   --glow-c: rgb(196 181 253 / 0.2);
+  --band: rgb(76 64 160 / 0.045);
   --sh-class: #1d4ed8;
   --sh-string: #15803d;
   --sh-keyword: #6d28d9;
@@ -380,6 +382,23 @@ body {
 /* ── Optional effects (switches in lib/features.ts) ──────── */
 
 /* Scroll reveal: Effects adds .reveal-pending with JS, so no-JS stays visible. */
+/* A faintly lighter band behind a section, edge to edge although the section sits in the centred column:
+   the shadow paints the sides and the clip keeps it to the section's own height. */
+.band {
+  position: relative;
+  isolation: isolate;
+}
+.band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--band);
+  box-shadow: 0 0 0 100vmax var(--band);
+  clip-path: inset(0 -100vmax);
+  pointer-events: none;
+}
+
 [data-reveal] {
   transition:
     opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),

@@ -178,7 +178,7 @@ export default async function Home() {
         </section>
 
         {/* ── Method ─────────────────────────────────────── */}
-        <section data-reveal aria-labelledby="method" className="border-t border-line py-24">
+        <section data-reveal aria-labelledby="method" className="band border-t border-line py-24">
           <SectionHead id="method" kicker="How I work" title="Attack and build in the same loop." />
           <MethodFlow steps={method} beams={features.methodBeams} />
         </section>
@@ -262,7 +262,7 @@ export default async function Home() {
         )}
 
         {/* ── Writing ────────────────────────────────────── */}
-        <section data-reveal aria-labelledby="writing" className="border-t border-line py-24">
+        <section data-reveal aria-labelledby="writing" className="band border-t border-line py-24">
           <SectionHead id="writing" kicker="Writing" title="Notes from both sides.">
             <Link prefetch href="/blog" className="text-sm text-muted hover:text-fg">
               All posts →

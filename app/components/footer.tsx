@@ -85,7 +85,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-6 text-xs text-muted md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} {site.name}</p>
-          <p className="font-mono">
+          <p>
             Next.js · strict CSP · no trackers · no third-party requests ·{' '}
             <Link href="/sitemap.xml" className={linkClass}>
               sitemap
