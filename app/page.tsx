@@ -35,6 +35,8 @@ function SectionHead({ id, kicker, title, children }: { id: string; kicker: stri
 export default async function Home() {
   const work = getWork()
   const posts = getPosts().slice(0, 3)
+  // Placeholder entries never reach the page; the section appears once a real certificate is added.
+  const certs = certificates.filter((c) => !c.demo)
 
   return (
     <>
@@ -104,10 +106,11 @@ export default async function Home() {
             </ul>
           </div>
         </div>
-        {/* First thing on phones, full width with the text overlapping its faded bottom; on desktop it fills
-            the hero's right side, flush to the screen edge, and fades into the page on the left (see .hero-portrait). */}
+        {/* First thing on phones, full width with the text overlapping its faded bottom, and short enough that
+            the headline shows without scrolling; on desktop it fills the hero's right side, flush to the screen
+            edge, and fades into the page on the left (see .hero-portrait). */}
         <div
-          className="rise relative order-first h-[min(58svh,520px)] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[46%]"
+          className="rise relative order-first h-[clamp(280px,46svh,440px)] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[46%]"
           style={{ '--i': 2 } as React.CSSProperties}
         >
           <HeroPortrait />
@@ -118,9 +121,10 @@ export default async function Home() {
       <section aria-label="At a glance" className="border-b border-line">
         <dl className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
           {stats.map((s, i) => (
-            <div key={s.label} className={`px-5 py-8 ${i % 2 ? 'border-l' : ''} ${i > 1 ? 'border-t md:border-t-0' : ''} border-line md:border-l md:first:border-l-0`}>
-              <dt className="text-sm text-muted">{s.label}</dt>
-              <dd data-count className="mt-1 text-3xl font-semibold tracking-tight tabular-nums md:text-4xl">{s.value}</dd>
+            // Number first, label under it (reversed visually), so the numbers line up when a label wraps.
+            <div key={s.label} className={`flex flex-col-reverse justify-end px-5 py-8 ${i % 2 ? 'border-l' : ''} ${i > 1 ? 'border-t md:border-t-0' : ''} border-line md:border-l md:first:border-l-0`}>
+              <dt className="mt-1 text-sm text-muted">{s.label}</dt>
+              <dd data-count className="text-3xl font-semibold tracking-tight tabular-nums md:text-4xl">{s.value}</dd>
             </div>
           ))}
         </dl>
@@ -196,7 +200,8 @@ export default async function Home() {
               ))}
             </ol>
           </div>
-          <div>
+          {/* Shorter than the timeline, so it stays in view beside it instead of leaving the column empty. */}
+          <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHead id="toolbox" kicker="Toolbox" title="What I reach for." />
             <div className="grid gap-4">
               {toolbox.map((g, i) => (
@@ -220,22 +225,16 @@ export default async function Home() {
         </section>
 
         {/* ── Certificates ───────────────────────────────── */}
+        {certs.length > 0 && (
         <section data-reveal aria-labelledby="certificates" className="border-t border-line py-24">
-          <SectionHead id="certificates" kicker="Certificates" title="Credentials on record.">
-            {certificates.some((c) => c.demo) && (
-              <p className="max-w-xs text-sm text-muted">Entries marked Demo are placeholders while real certificates are added.</p>
-            )}
-          </SectionHead>
+          <SectionHead id="certificates" kicker="Certificates" title="Credentials on record." />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {certificates.map((c) => (
+            {certs.map((c) => (
               <li key={c.id} className="card-lift min-w-0">
                 <article data-spotlight data-track={c.track} className="cert-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="cert-seal grid h-11 w-11 shrink-0 place-items-center rounded-full font-mono text-sm font-semibold" aria-hidden="true">
-                      {c.issuer.slice(0, 2).toUpperCase()}
-                    </span>
-                    {c.demo && <span className="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-muted">Demo</span>}
-                  </div>
+                  <span className="cert-seal grid h-11 w-11 shrink-0 place-items-center rounded-full font-mono text-sm font-semibold" aria-hidden="true">
+                    {c.issuer.slice(0, 2).toUpperCase()}
+                  </span>
                   <h3 className="mt-5 text-lg font-semibold leading-snug">{c.name}</h3>
                   <p className="text-sm text-muted">
                     {c.issuer} · {c.issued}
@@ -260,6 +259,7 @@ export default async function Home() {
             ))}
           </ul>
         </section>
+        )}
 
         {/* ── Writing ────────────────────────────────────── */}
         <section data-reveal aria-labelledby="writing" className="border-t border-line py-24">

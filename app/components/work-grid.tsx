@@ -65,7 +65,12 @@ function useGlow(root: React.RefObject<HTMLElement | null>) {
 /* Filterable case-study bento grid. "Both" projects appear under either filter. */
 export function WorkGrid({ items }: { items: Item[] }) {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('all')
-  const shown = items.filter((w) => filter === 'all' || w.metadata.track === filter || w.metadata.track === 'both')
+  const matching = items.filter((w) => filter === 'all' || w.metadata.track === filter || w.metadata.track === 'both')
+  // Projects with a screenshot get the big bento tiles; the rest go in a compact list below,
+  // so no tile is stretched tall with nothing to fill it.
+  const hasShot = (w: Item) => Boolean(w.metadata.shot && w.metadata.live)
+  const shown = matching.filter(hasShot)
+  const compact = matching.filter((w) => !hasShot(w))
   const spans = bentoSpans(shown.length)
   const grid = useRef<HTMLUListElement>(null)
   useGlow(grid)
@@ -107,7 +112,7 @@ export function WorkGrid({ items }: { items: Item[] }) {
                   </span>
                   <span className="flex items-center gap-3 font-mono text-xs text-muted">
                     {(m.repo || m.repos.length > 0) && (
-                      <span className="rounded-full border border-ok/40 px-2 py-0.5 text-ok">
+                      <span className="rounded-full border border-line px-2 py-0.5">
                         {m.repos.length > 1 ? `${m.repos.length} repos` : 'Open source'}
                       </span>
                     )}
@@ -179,6 +184,48 @@ export function WorkGrid({ items }: { items: Item[] }) {
           )
         })}
       </ul>
+      {compact.length > 0 && (
+        <ul className={`grid gap-4 md:grid-cols-2 ${shown.length > 0 ? 'mt-4' : ''}`}>
+          {compact.map(({ slug, metadata: m }) => (
+            <li key={slug} className="card-lift relative min-w-0 rounded-2xl">
+              <Link
+                prefetch
+                href={`/work/${slug}`}
+                className="bento-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-muted/50"
+              >
+                {features.trackColors && <span className="track-bar" data-track={m.track} aria-hidden="true" />}
+                <div className="flex flex-wrap items-center justify-between gap-3 whitespace-nowrap">
+                  <TrackTag track={m.track} />
+                  <span className="flex items-center gap-3 font-mono text-xs text-muted">
+                    {(m.repo || m.repos.length > 0) && (
+                      <span className="rounded-full border border-line px-2 py-0.5">
+                        {m.repos.length > 1 ? `${m.repos.length} repos` : 'Open source'}
+                      </span>
+                    )}
+                    {m.year}
+                  </span>
+                </div>
+                <h3 className="mt-4 text-xl font-semibold tracking-tight">
+                  {features.pageTransitions ? (
+                    <ViewTransition name={`work-title-${slug}`} share="morph" default="none">
+                      <span className="inline-block">{m.title}</span>
+                    </ViewTransition>
+                  ) : (
+                    m.title
+                  )}
+                </h3>
+                <p className="mt-2 line-clamp-2 text-sm text-muted">{m.summary}</p>
+                <div className="mt-auto flex items-end justify-between gap-4 pt-5">
+                  <p className="text-sm text-fg">{m.outcome}</p>
+                  <span className="shrink-0 text-sm text-muted transition-[color,transform] group-hover:translate-x-1 group-hover:text-fg" aria-hidden="true">
+                    →
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }

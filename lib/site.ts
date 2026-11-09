@@ -107,9 +107,10 @@ export const toolbox = [
   { group: 'Backend & tooling', track: 'web', items: ['Node.js (http, tls, dns)', 'GitHub Actions', 'Vercel', 'Upstash Redis', 'node:test'] },
 ] as const
 
-// DEMO DATA — placeholders to show the layout, not real credentials. Each one renders a
-// "Demo" badge. Replace an entry with a real certificate (and set demo: false, or delete the
-// field) once you have it; add `href` with the issuer's verification link if there is one.
+// DEMO DATA — placeholders, not real credentials. Entries with demo: true are hidden from the
+// site, and the Certificates section only appears once an entry is real. Replace an entry with
+// a real certificate (and delete the demo field) once you have it; add `href` with the issuer's
+// verification link if there is one.
 export const certificates: {
   name: string
   issuer: string
