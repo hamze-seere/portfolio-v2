@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo, JetBrains_Mono } from 'next/font/google'
-import { headers } from 'next/headers'
+import { cookies } from 'next/headers'
 import { ViewTransition } from 'react'
 import { Nav } from './components/nav'
 import { Footer } from './components/footer'
@@ -10,6 +10,7 @@ import { SmoothScroll } from './components/smooth-scroll'
 import { getPosts, getWork } from '@/lib/content'
 import { features } from '@/lib/features'
 import { baseUrl, certificates, site } from '@/lib/site'
+import { THEME_COLORS, THEME_COOKIE } from '@/lib/theme'
 import './globals.css'
 
 function paletteItems(): PaletteItem[] {
@@ -51,26 +52,28 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 }
 
-export const viewport: Viewport = {
-  themeColor: '#07061a',
+async function isLight() {
+  return (await cookies()).get(THEME_COOKIE)?.value === 'light'
+}
+
+export async function generateViewport(): Promise<Viewport> {
+  return { themeColor: (await isLight()) ? THEME_COLORS.light : THEME_COLORS.dark }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Reading the request makes every page render per request, so Next can stamp the
-  // CSP nonce from proxy.ts onto its scripts. Static pages would be blocked by the CSP.
-  const nonce = (await headers()).get('x-nonce') ?? undefined
+  // Reading the request (the theme cookie) makes every page render per request, so Next can
+  // stamp the CSP nonce from proxy.ts onto its scripts. Static pages would be blocked by the CSP.
+  const light = await isLight()
   return (
-    // The theme script below may set data-theme before React hydrates.
-    <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
-      <head>
-        {/* Apply a saved day theme before the first paint (see theme-toggle.tsx). */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem('theme')==='light'){document.documentElement.dataset.theme='light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f6f5fc')}}catch(e){}`,
-          }}
-        />
-      </head>
+    // The saved theme comes from a cookie (lib/theme.ts), so it is in the first paint.
+    // suppressHydrationWarning: the theme toggle and Lenis change <html> attributes on the client.
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      data-theme={light ? 'light' : undefined}
+      className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <body className="bg-bg text-fg antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-bg">
           Skip to content

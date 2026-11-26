@@ -10,14 +10,14 @@ const EMPTY: Fields = { name: '', email: '', topic: '', message: '' }
 const input =
   'mt-2 w-full rounded-lg border border-line bg-bg px-3.5 py-2.5 text-fg outline-none transition-colors placeholder:text-muted/60 focus:border-web aria-[invalid=true]:border-sec'
 
-export function ContactForm() {
+/** openedAt: when the server rendered the page. Stamped there rather than by JavaScript, so the
+    minimum-fill-time check also lets through people who submit with JavaScript off. */
+export function ContactForm({ openedAt }: { openedAt: number }) {
   const [state, action, pending] = useActionState<FormState, FormData>(sendMessage, { status: 'idle' })
   const [fields, setFields] = useState(EMPTY)
   const [touched, setTouched] = useState<Partial<Record<keyof Fields, boolean>>>({})
-  const [openedAt, setOpenedAt] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
 
-  useEffect(() => setOpenedAt(String(Date.now())), [])
   const sentRef = useRef<HTMLDivElement>(null)
   // A small burst from the confirmation once the message is really sent.
   useEffect(() => {

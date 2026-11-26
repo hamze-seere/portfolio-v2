@@ -3,10 +3,12 @@
 import { headers } from 'next/headers'
 import { validate, type Fields, type FormState } from '@/lib/contact'
 import { site } from '@/lib/site'
+import { allow, hashIp } from '@/lib/rate-limit'
 
 /*
   Contact endpoint. Server actions already enforce same-origin. On top: honeypot,
-  minimum fill time, per-IP rate limit, and server-side re-validation.
+  minimum fill time, per-IP rate limit on hashed IPs (lib/rate-limit.ts), and server-side
+  re-validation.
   Delivery: with RESEND_API_KEY, emails the message to CONTACT_TO (default: site.email)
   from CONTACT_FROM (default: Resend's onboarding sender, which only delivers to the
   Resend account's own address). Or POSTs JSON to CONTACT_WEBHOOK_URL (n8n, Zapier,
@@ -44,16 +46,6 @@ async function deliver(ref: string, fields: Fields) {
 
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_PER_WINDOW = 5
-const hits = new Map<string, number[]>() // in-memory; use KV/Redis across instances
-
-function limited(ip: string) {
-  const now = Date.now()
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS)
-  recent.push(now)
-  hits.set(ip, recent)
-  if (hits.size > 5000) hits.clear()
-  return recent.length > MAX_PER_WINDOW
-}
 
 const str = (v: FormDataEntryValue | null, max: number) => (typeof v === 'string' ? v.slice(0, max) : '')
 const newRef = () => 'REQ-' + crypto.randomUUID().slice(0, 8).toUpperCase()
@@ -73,7 +65,7 @@ export async function sendMessage(_prev: FormState, form: FormData): Promise<For
   const openedAt = Number(str(form.get('t'), 20))
   if (str(form.get('website'), 200) || !openedAt || Date.now() - openedAt < 3000) return { status: 'sent', ref: newRef() }
 
-  if (limited(ip)) return { status: 'error', errors: {}, message: 'Too many messages from your network. Please try again in 10 minutes.' }
+  if (!(await allow(hashIp(ip), MAX_PER_WINDOW, WINDOW_MS))) return { status: 'error', errors: {}, message: 'Too many messages from your network. Please try again in 10 minutes.' }
 
   const errors = validate(fields)
   if (Object.keys(errors).length) return { status: 'error', errors }

@@ -1,14 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { THEME_COLORS, THEME_COOKIE } from '@/lib/theme'
 
 /*
   Day / night switch. Night (the indigo palette) is the default; day sets
   data-theme="light" on <html>, which swaps the colour tokens in globals.css.
-  The choice is remembered, and a tiny script in layout.tsx applies it before
-  the page paints so there is no flash of the wrong theme.
+  The choice is saved in a cookie, and layout.tsx renders it on the server, so the
+  first paint already has the right theme without an inline script.
 */
-const COLORS = { dark: '#07061a', light: '#f6f5fc' }
+
+function apply(light: boolean) {
+  const root = document.documentElement
+  if (light) root.dataset.theme = 'light'
+  else delete root.dataset.theme
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? THEME_COLORS.light : THEME_COLORS.dark)
+  document.cookie = `${THEME_COOKIE}=${light ? 'light' : 'dark'}; path=/; max-age=31536000; samesite=lax; secure`
+}
 
 export function ThemeToggle() {
   const [light, setLight] = useState(false)
@@ -16,15 +24,9 @@ export function ThemeToggle() {
 
   const toggle = () => {
     // Read the page, not state: a tap can land before the mount effect has synced it.
-    const root = document.documentElement
-    const next = root.dataset.theme !== 'light'
+    const next = document.documentElement.dataset.theme !== 'light'
     setLight(next)
-    if (next) root.dataset.theme = 'light'
-    else delete root.dataset.theme
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next ? COLORS.light : COLORS.dark)
-    try {
-      localStorage.setItem('theme', next ? 'light' : 'dark')
-    } catch {}
+    apply(next)
   }
 
   return (

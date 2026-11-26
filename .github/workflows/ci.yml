@@ -1,0 +1,42 @@
+name: CI
+
+# Builds the site and checks its security claims on every push and pull request:
+# dependency audit, type-checked build, then scripts/verify-hardening.mjs against the
+# production build (CSP, nonces, security headers, no third-party requests, security.txt,
+# and every page in the sitemap renders).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and verify hardening
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Actions are pinned to commit hashes; Dependabot keeps them up to date.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Build (type-checks and validates the front matter)
+        run: npm run build
+      - name: Verify CSP, security headers, third-party requests and that every page renders
+        run: |
+          npm start -- -p 3000 &
+          npm run verify

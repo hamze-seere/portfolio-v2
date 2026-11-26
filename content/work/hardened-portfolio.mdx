@@ -6,7 +6,7 @@ track: both
 role: Solo — design, front-end, security
 client: Personal project
 stack: Next.js 16, React 19, TypeScript, Tailwind 4, MDX, Vercel
-outcome: Strict CSP with no unsafe-inline · zero third-party requests · CI with Dependabot
+outcome: Nonce CSP, no unsafe-inline scripts · zero third-party requests · headers checked in CI · Dependabot
 repo: https://github.com/hamze-seere/portfolio-v2
 live: https://hamse-yo-xs.vercel.app
 order: 2
@@ -18,20 +18,23 @@ A portfolio for someone who does both security and web development should prove 
 
 ## Security
 
-- **Strict Content Security Policy with per-request nonces** — `script-src 'nonce-…' 'strict-dynamic'`, no `unsafe-inline` or `unsafe-eval` for scripts.
+- **Strict Content Security Policy with per-request nonces** — `script-src 'nonce-…' 'strict-dynamic'`, no `unsafe-inline` or `unsafe-eval` for scripts, `object-src`, `base-uri` and `frame-ancestors` all `'none'`.
 - **Full header set** — HSTS with preload, `nosniff`, Referrer-Policy, Permissions-Policy, X-Frame-Options, COOP, CORP, and no `X-Powered-By`.
-- **RFC 9116 `security.txt`**, generated from config.
+- **RFC 9116 `security.txt`**, generated from config, with an expiry date that moves forward on every deploy.
 - **Zero third-party requests** — fonts self-hosted at build time; no analytics, embeds or CDNs.
 - **No inline theme script** — the dark/light choice lives in a cookie and is rendered on the server, so the right theme is in the first paint without weakening the CSP.
-- **Hardened contact form** — Origin-checked Server Action, honeypot, rate limiting with hashed IPs, schema validation, and a `mailto:` fallback.
+- **Hardened contact form** — a Server Action (same-origin only), a honeypot, a minimum fill time, a per-IP rate limit keyed on HMAC-hashed IPs so raw addresses are never stored, server-side validation, and a `mailto:` fallback.
+- **Checked on every change** — CI audits the production dependencies, builds the site, then runs a script against the build that fails if the CSP, the nonces, the headers or `security.txt` regress, if any third-party request appears, or if any page stops rendering. Dependabot opens weekly update PRs, and the GitHub Actions are pinned to commit hashes.
 
 ## Front-end
 
-- MDX case studies and posts, validated at build time, with build-time syntax highlighting that ships no client JavaScript.
+- MDX case studies and posts with front matter checked at build time (a missing field or a misspelt track fails the build), and server-side syntax highlighting that ships no client JavaScript.
 - Per-page metadata, generated Open Graph images, sitemap, robots and JSON-LD.
-- Accessibility built in: semantic landmarks, skip link, visible focus, WCAG AA colour tokens, `prefers-reduced-motion`, and filters and forms that work without JavaScript.
-- A short, justified dependency list — each runtime package has a written reason to exist.
+- Accessibility built in: semantic landmarks, skip link, visible focus, WCAG AA colour tokens, `prefers-reduced-motion`, and a contact form that works without JavaScript.
+- A short, justified dependency list — each runtime package has a written reason to exist [in the README](https://github.com/hamze-seere/portfolio-v2#dependencies).
 
-## Trade-off I documented
+## Trade-offs I documented
 
 A per-request nonce means HTML can't be pre-rendered at build time, so pages render per request. I chose the stronger CSP and wrote down why, instead of quietly accepting `unsafe-inline`.
+
+Inline `style` attributes are still allowed (`style-src-attr 'unsafe-inline'`). The animation library, the image component and the syntax highlighter write them, and a style attribute can't run script. Removing it would mean rewriting those, for a small gain, so I kept it and said so. `<style>` elements still need the nonce.

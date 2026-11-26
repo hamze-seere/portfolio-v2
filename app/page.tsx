@@ -328,7 +328,7 @@ export default async function Home() {
               </p>
             </div>
           </div>
-          <ContactForm />
+          <ContactForm openedAt={Date.now()} />
         </section>
       </div>
     </>
